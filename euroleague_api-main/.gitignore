@@ -1,0 +1,8 @@
+**__pycache__/
+.mypy_cache/
+.vscode/
+notebooks/test*.ipynb
+notebooks/data/*
+*egg-info/
+build/*
+dist/*

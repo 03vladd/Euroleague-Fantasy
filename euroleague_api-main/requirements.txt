@@ -1,0 +1,12 @@
+requests
+pandas
+numpy
+mypy
+pandas-stubs
+pre-commit
+nbstripout
+xmltodict
+tqdm
+twine
+pdocs
+build
