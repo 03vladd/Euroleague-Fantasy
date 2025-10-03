@@ -1,171 +1,97 @@
 """
-Prepare Euroleague fantasy data
-Run this first to get your dataset ready
+Euroleague Fantasy Optimizer - Main Pipeline
+Run this to execute the full workflow from data collection to team optimization
 """
 
-import pandas as pd
-import numpy as np
-from euroleague_api.boxscore_data import BoxScoreData
-from euroleague_api.game_stats import GameStats
+import sys
 from pathlib import Path
 
-# Create directories
-Path("data/raw").mkdir(parents=True, exist_ok=True)
-Path("data/processed").mkdir(parents=True, exist_ok=True)
+def print_header(text):
+    print("\n" + "=" * 70)
+    print(f"  {text}")
+    print("=" * 70 + "\n")
 
-print("=" * 60)
-print("STEP 1: Collecting game-by-game player stats...")
-print("=" * 60)
+def run_step(step_name, script_name, description):
+    print_header(f"STEP {step_name}: {description}")
+    print(f"Running: {script_name}\n")
 
-boxscore = BoxScoreData("E")
-game_by_game = boxscore.get_player_boxscore_stats_single_season(2024)
-
-print(f"✓ Collected {len(game_by_game)} game performances")
-print(f"  Columns: {list(game_by_game.columns)}")
-
-game_by_game.to_csv('data/raw/player_game_stats_2024.csv', index=False)
-
-print("\n" + "=" * 60)
-print("STEP 2: Calculating fantasy points...")
-print("=" * 60)
-
-def calculate_fantasy_points(df):
-    """Calculate fantasy points based on official rules"""
-    df = df.copy()
-
-    # Positive stats (+1 each)
-    fp = (
-        df['Points'] +
-        df['TotalRebounds'] +
-        df['Assistances'] +
-        df['Steals'] +
-        df['BlocksFavour'] +
-        df['FoulsReceived']
-    )
-
-    # Negative stats (-1 each)
-    fp -= (
-        df['Turnovers'] +
-        df['BlocksAgainst'] +
-        df['FoulsCommited']
-    )
-
-    # Missed shots
-    missed_fg = (
-        (df['FieldGoalsAttempted2'] - df['FieldGoalsMade2']) +
-        (df['FieldGoalsAttempted3'] - df['FieldGoalsMade3'])
-    )
-    missed_ft = df['FreeThrowsAttempted'] - df['FreeThrowsMade']
-
-    fp -= (missed_fg + missed_ft)
-
-    df['fantasy_points'] = fp
-
-    return df
-
-game_by_game = calculate_fantasy_points(game_by_game)
-
-# Convert Minutes from MM:SS string to decimal
-def convert_minutes(time_str):
-    """Convert MM:SS to decimal minutes"""
-    if pd.isna(time_str):
-        return 0
     try:
-        parts = str(time_str).split(':')
-        return int(parts[0]) + int(parts[1]) / 60
-    except:
-        return 0
+        with open(script_name) as f:
+            exec(f.read(), {'__name__': '__main__'})
+        print(f"\n✓ {step_name} completed successfully")
+        return True
+    except FileNotFoundError:
+        print(f"✗ Error: {script_name} not found")
+        return False
+    except Exception as e:
+        print(f"✗ Error in {step_name}: {str(e)}")
+        return False
 
-game_by_game['Minutes'] = game_by_game['Minutes'].apply(convert_minutes)
+def main():
+    print_header("EUROLEAGUE FANTASY OPTIMIZER")
+    print("This pipeline will:")
+    print("  1. Collect data from Euroleague & Eurocup APIs")
+    print("  2. Engineer features (rolling averages, form indicators)")
+    print("  3. Train ML model to predict next round performance")
+    print("  4. Optimize team selection within budget constraints")
+    print("\nEstimated time: 10-15 minutes")
 
-print(f"✓ Calculated fantasy points for all games")
-print("\nTop 5 single-game performances:")
-top5 = game_by_game.nlargest(5, 'fantasy_points')[
-    ['Player', 'Team', 'Round', 'fantasy_points', 'Points', 'TotalRebounds']
-]
-print(top5.to_string(index=False))
+    response = input("\nProceed? (y/n): ")
+    if response.lower() != 'y':
+        print("Aborted.")
+        return
 
-print("\n" + "=" * 60)
-print("STEP 3: Aggregating to season averages...")
-print("=" * 60)
+    # Step 1: Data Collection
+    if not run_step("1", "prepare_data_v2.py", "Data Collection"):
+        print("\nPipeline failed at Step 1")
+        return
 
-player_season_stats = game_by_game.groupby('Player').agg({
-    'fantasy_points': ['mean', 'std', 'sum', 'max'],
-    'Minutes': 'mean',
-    'Points': 'mean',
-    'TotalRebounds': 'mean',
-    'Assistances': 'mean',
-    'Valuation': 'mean',
-    'Team': 'first',
-    'Round': 'count'
-}).reset_index()
+    # Step 2: Feature Engineering
+    if not run_step("2", "build_features.py", "Feature Engineering"):
+        print("\nPipeline failed at Step 2")
+        return
 
-# Flatten column names
-player_season_stats.columns = ['_'.join(col).strip('_') for col in player_season_stats.columns]
-player_season_stats.rename(columns={'Round_count': 'games_played'}, inplace=True)
+    # Step 3: Model Training
+    if not run_step("3", "train_model.py", "ML Model Training"):
+        print("\nPipeline failed at Step 3")
+        return
 
-print(f"✓ Aggregated stats for {len(player_season_stats)} players")
+    # Step 4: Team Optimization
+    if not run_step("4", "optimize_team_v2.py", "Team Optimization"):
+        print("\nPipeline failed at Step 4")
+        return
 
-print("\n" + "=" * 60)
-print("STEP 4: Merging with prices...")
-print("=" * 60)
+    # Success
+    print_header("PIPELINE COMPLETED SUCCESSFULLY")
+    print("Your optimal team has been saved to: optimal_team_ml.csv")
+    print("\nNext steps:")
+    print("  1. Check if positions fit 4G/4F/2C requirement")
+    print("  2. Verify players are healthy (check injury reports)")
+    print("  3. Add a coach to your roster")
+    print("  4. Submit your team!")
 
-prices = pd.read_csv('euroleague_prices.csv')
-print(f"✓ Loaded prices for {len(prices)} players")
+    print("\nFiles generated:")
+    print("  - data/processed/fantasy_dataset_2024.csv")
+    print("  - data/processed/next_round_predictions.csv")
+    print("  - models/fantasy_predictor.pkl")
+    print("  - optimal_team_ml.csv")
 
-final_df = pd.merge(
-    player_season_stats,
-    prices,
-    left_on='Player',
-    right_on='player.name',
-    how='right'
-)
+if __name__ == "__main__":
+    # Check required files exist
+    required_files = [
+        'prepare_data_v2.py',
+        'build_features.py',
+        'train_model.py',
+        'optimize_team_v2.py',
+        'euroleague_prices.csv'
+    ]
 
-print(f"✓ Merged dataset: {len(final_df)} total players")
-print(f"  Players with stats: {final_df['fantasy_points_mean'].notna().sum()}")
-print(f"  Players missing stats: {final_df['fantasy_points_mean'].isna().sum()}")
+    missing = [f for f in required_files if not Path(f).exists()]
 
-print("\n" + "=" * 60)
-print("STEP 5: Calculating value metrics...")
-print("=" * 60)
+    if missing:
+        print("Error: Missing required files:")
+        for f in missing:
+            print(f"  - {f}")
+        sys.exit(1)
 
-# Filter to players with stats
-final_df = final_df[final_df['fantasy_points_mean'].notna()].copy()
-
-# Calculate value
-final_df['value_score'] = final_df['fantasy_points_mean'] / final_df['price']
-final_df['consistency'] = 1 / (final_df['fantasy_points_std'] + 1)
-final_df['points_per_credit'] = final_df['fantasy_points_mean'] / final_df['price']
-
-print(f"✓ Final dataset ready: {len(final_df)} players with complete data")
-
-print("\n" + "=" * 60)
-print("STEP 6: Saving results...")
-print("=" * 60)
-
-final_df.to_csv('data/processed/fantasy_dataset_2024.csv', index=False)
-print("✓ Saved to: data/processed/fantasy_dataset_2024.csv")
-
-print("\n" + "=" * 60)
-print("TOP 20 PLAYERS BY VALUE SCORE")
-print("=" * 60)
-
-top_value = final_df.nlargest(20, 'value_score')[[
-    'Player', 'Team_first', 'games_played', 'fantasy_points_mean',
-    'price', 'value_score'
-]]
-print(top_value.to_string(index=False))
-
-print("\n" + "=" * 60)
-print("TOP 20 PLAYERS BY TOTAL FANTASY POINTS")
-print("=" * 60)
-
-top_total = final_df.nlargest(20, 'fantasy_points_mean')[[
-    'Player', 'Team_first', 'games_played', 'fantasy_points_mean',
-    'price', 'value_score'
-]]
-print(top_total.to_string(index=False))
-
-print("\n" + "=" * 60)
-print("DONE! Next step: Run the optimizer")
-print("=" * 60)
+    main()

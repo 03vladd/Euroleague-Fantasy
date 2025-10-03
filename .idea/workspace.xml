@@ -5,69 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6df23b43-7823-4857-a02a-851f9098984a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/EuroLeagueFantasu.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build_features.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/fantasy_dataset_2024.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/player_games_with_features.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/prediction_features.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/raw/player_game_stats_2024.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/.github/funding.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/.github/workflows/python-publish.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/.pre-commit-config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/LICENSE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/EuroLeagueData.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/boxscore_data.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/game_metadata.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/game_stats.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/play_by_play_data.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/player_stats.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/shot_data.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/standings.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/team_stats.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/docs/euroleague_api/utils.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/mypy.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/notebooks/get-new-format-seasons-stats.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/notebooks/get-season-stats.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/pylintrc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/pyproject.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/setup.cfg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/EuroLeagueData.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/boxscore_data.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/game_metadata.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/game_stats.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/play_by_play_data.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/player_stats.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/shot_data.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/standings.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/team_stats.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/site/euroleague_api/utils.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/EuroLeagueData.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/boxscore_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/game_metadata.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/game_stats.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/play_by_play_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/player_stats.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/shot_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/standings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/team_stats.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_api-main/src/euroleague_api/utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/euroleague_stats.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/optimal_team.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/optimize_team.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/train_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/check_names.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/processed/all_players_with_prices.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/raw/all_player_game_stats_2024.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/raw/all_season_stats_2024.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/prepare_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +28,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -99,11 +46,14 @@
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Python.build_features.executor": "Run",
+    "Python.check_names.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.optimize_team_v2.executor": "Run",
+    "Python.prepare_data.executor": "Run",
     "Python.train_model.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Users/vasiu/UBB/Info/AI/EuroLeagueFantasu",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -118,7 +68,7 @@
     ]
   }
 }]]></component>
-  <component name="RunManager" selected="Python.train_model">
+  <component name="RunManager" selected="Python.check_names">
     <configuration name="build_features" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="EuroLeagueFantasu" />
       <option name="ENV_FILES" value="" />
@@ -142,6 +92,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="check_names" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EuroLeagueFantasu" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/check_names.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="EuroLeagueFantasu" />
       <option name="ENV_FILES" value="" />
@@ -157,6 +130,52 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="optimize_team_v2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EuroLeagueFantasu" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/optimize_team_v2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="prepare_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="EuroLeagueFantasu" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/prepare_data.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -190,6 +209,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.check_names" />
+        <item itemvalue="Python.prepare_data" />
+        <item itemvalue="Python.optimize_team_v2" />
         <item itemvalue="Python.train_model" />
         <item itemvalue="Python.build_features" />
       </list>
@@ -213,7 +235,7 @@
       <workItem from="1757973514215" duration="6427000" />
       <workItem from="1758034582847" duration="4357000" />
       <workItem from="1758291066602" duration="12556000" />
-      <workItem from="1759491038806" duration="3075000" />
+      <workItem from="1759491038806" duration="5974000" />
     </task>
     <servers />
   </component>
@@ -226,6 +248,9 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$train_model.coverage" NAME="train_model Coverage Results" MODIFIED="1759493702909" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$build_features.coverage" NAME="build_features Coverage Results" MODIFIED="1759493695736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EuroLeagueFantasu$optimize_team_v2.coverage" NAME="optimize_team_v2 Coverage Results" MODIFIED="1759494899502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EuroLeagueFantasu$check_names.coverage" NAME="check_names Coverage Results" MODIFIED="1759498666526" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$main.coverage" NAME="main Coverage Results" MODIFIED="1759492814356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EuroLeagueFantasu$prepare_data.coverage" NAME="prepare_data Coverage Results" MODIFIED="1759498714804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
