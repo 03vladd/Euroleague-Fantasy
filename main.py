@@ -42,7 +42,7 @@ def main():
         return
 
     # Step 1: Data Collection
-    if not run_step("1", "prepare_data_v2.py", "Data Collection"):
+    if not run_step("1", "prepare_data.py", "Data Collection"):
         print("\nPipeline failed at Step 1")
         return
 
@@ -79,7 +79,7 @@ def main():
 if __name__ == "__main__":
     # Check required files exist
     required_files = [
-        'prepare_data_v2.py',
+        'prepare_data.py',
         'build_features.py',
         'train_model.py',
         'optimize_team_v2.py',

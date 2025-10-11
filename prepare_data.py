@@ -210,9 +210,13 @@ print("\n" + "=" * 60)
 print("COVERAGE ANALYSIS")
 print("=" * 60)
 
+# Count by competition
+el_count = len(all_season_stats[all_season_stats['Competition'] == 'Euroleague'])
+ec_count = len(all_season_stats[all_season_stats['Competition'] == 'Eurocup'])
+
 print(f"\nPlayers in price list: {len(prices)}")
-print(f"Players with Euroleague stats: {len(el_season)}")
-print(f"Players with Eurocup stats: {len(ec_season)}")
+print(f"Players with Euroleague stats: {el_count}")
+print(f"Players with Eurocup stats: {ec_count}")
 print(f"Players with either: {len(all_season_stats)}")
 print(f"Players with prices but no stats: {stats_with_prices['gamesPlayed'].isna().sum()}")
 
