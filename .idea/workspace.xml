@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6df23b43-7823-4857-a02a-851f9098984a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/check_names.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/processed/all_players_with_prices.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/raw/all_player_game_stats_2024.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/raw/all_season_stats_2024.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prepare_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prepare_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/prepare_data.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -53,8 +53,8 @@
     "Python.train_model.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/vasiu/UBB/Info/AI/EuroLeagueFantasu",
+    "git-widget-placeholder": "feature/Oprimize",
+    "last_opened_file_path": "C:/Users/vasiu/UBB/Info/QuantifiedStrides",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -235,7 +235,9 @@
       <workItem from="1757973514215" duration="6427000" />
       <workItem from="1758034582847" duration="4357000" />
       <workItem from="1758291066602" duration="12556000" />
-      <workItem from="1759491038806" duration="5974000" />
+      <workItem from="1759491038806" duration="7811000" />
+      <workItem from="1759745183220" duration="42000" />
+      <workItem from="1760127920702" duration="84000" />
     </task>
     <servers />
   </component>
@@ -249,7 +251,7 @@
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$train_model.coverage" NAME="train_model Coverage Results" MODIFIED="1759493702909" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$build_features.coverage" NAME="build_features Coverage Results" MODIFIED="1759493695736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$optimize_team_v2.coverage" NAME="optimize_team_v2 Coverage Results" MODIFIED="1759494899502" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/EuroLeagueFantasu$check_names.coverage" NAME="check_names Coverage Results" MODIFIED="1759498666526" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/EuroLeagueFantasu$check_names.coverage" NAME="check_names Coverage Results" MODIFIED="1759498801327" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$main.coverage" NAME="main Coverage Results" MODIFIED="1759492814356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/EuroLeagueFantasu$prepare_data.coverage" NAME="prepare_data Coverage Results" MODIFIED="1759498714804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
