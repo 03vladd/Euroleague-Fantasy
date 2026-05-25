@@ -3,6 +3,7 @@ Train ML model to predict next round fantasy points
 Uses XGBoost with time-series cross-validation
 """
 
+import json
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import TimeSeriesSplit
@@ -10,6 +11,20 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import xgboost as xgb
 import pickle
 from pathlib import Path
+
+# Load tuned hyperparameters if tune_model.py has been run, otherwise use defaults
+_params_path = Path('models/best_params.json')
+if _params_path.exists():
+    with open(_params_path) as f:
+        BEST_PARAMS = json.load(f)
+    print(f"Loaded tuned hyperparameters from {_params_path}")
+else:
+    BEST_PARAMS = {
+        'n_estimators': 400, 'max_depth': 4, 'learning_rate': 0.02,
+        'subsample': 0.8, 'colsample_bytree': 0.7, 'min_child_weight': 5,
+        'gamma': 0.1, 'reg_alpha': 0.05, 'reg_lambda': 1.0,
+    }
+    print("No tuned params found — using defaults. Run tune_model.py to optimise.")
 
 print("=" * 60)
 print("FANTASY POINTS PREDICTION MODEL")
@@ -22,11 +37,15 @@ df = pd.read_csv('data/processed/player_games_with_features.csv')
 df = df[df['Minutes'] >= 5].copy()
 print(f"\nGames with 5+ minutes: {len(df)}")
 
-# Create target: next game fantasy points
+# Create target: next game fantasy points (requires Player+Round ordering)
+df = df.sort_values(['Player', 'Round']).reset_index(drop=True)
 df['target'] = df.groupby('Player')['fantasy_points'].shift(-1)
 
 # Remove last game for each player (no target available)
 df = df[df['target'].notna()].copy()
+
+# Re-sort by Round so TimeSeriesSplit folds split by time, not alphabet
+df = df.sort_values('Round').reset_index(drop=True)
 print(f"Training samples: {len(df)}")
 
 print("\n" + "=" * 60)
@@ -37,22 +56,30 @@ print("=" * 60)
 feature_cols = [
     # Recent performance
     'fp_last_3', 'fp_last_5', 'fp_last_10',
-    'fp_std_3', 'fp_std_5',
+    'fp_std_3', 'fp_std_5', 'fp_std_10',
 
-    # Minutes/usage
-    'Minutes', 'minutes_last_3', 'minutes_last_5',
+    # Minutes / usage
+    'Minutes', 'minutes_last_3', 'minutes_last_5', 'minutes_last_10',
     'minutes_rank', 'usage_trend',
+
+    # Role stability
+    'starter_rate_3', 'starter_rate_5',
+
+    # Team quality when on court
+    'plusminus_last_3', 'plusminus_last_5',
 
     # Form
     'form_trend', 'hot_streak',
+    'points_share',
 
-    # Team context
-    'team_offensive_rating',
+    # Opponent & game context
+    'opp_defensive_rating',
+    'team_won', 'Home',
 
     # Experience
     'games_played',
 
-    # Last game stats
+    # Last game box score
     'Points', 'TotalRebounds', 'Assistances', 'Valuation'
 ]
 
@@ -77,15 +104,7 @@ for train_idx, val_idx in tscv.split(X):
     y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
 
     # Train XGBoost
-    model = xgb.XGBRegressor(
-        n_estimators=200,
-        max_depth=5,
-        learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        random_state=42,
-        n_jobs=-1
-    )
+    model = xgb.XGBRegressor(**BEST_PARAMS, random_state=42, n_jobs=-1, verbosity=0)
 
     model.fit(X_train, y_train, verbose=False)
 
@@ -114,16 +133,8 @@ print(f"\n{'=' * 60}")
 print("TRAINING FINAL MODEL")
 print(f"{'=' * 60}")
 
-# Train on all data
-final_model = xgb.XGBRegressor(
-    n_estimators=200,
-    max_depth=5,
-    learning_rate=0.05,
-    subsample=0.8,
-    colsample_bytree=0.8,
-    random_state=42,
-    n_jobs=-1
-)
+# Train on all data using the same tuned params as CV
+final_model = xgb.XGBRegressor(**BEST_PARAMS, random_state=42, n_jobs=-1, verbosity=0)
 
 final_model.fit(X, y, verbose=False)
 

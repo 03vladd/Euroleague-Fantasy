@@ -11,8 +11,8 @@ print("=" * 60)
 print("FEATURE ENGINEERING")
 print("=" * 60)
 
-# Load game-by-game data
-df = pd.read_csv('data/raw/player_game_stats_2024.csv')
+# Load game-by-game data (combined Euroleague + Eurocup)
+df = pd.read_csv('data/raw/all_player_game_stats_2025.csv')
 print(f"\nLoaded {len(df)} game performances")
 
 # Filter out team totals
@@ -70,6 +70,29 @@ def convert_minutes(time_str):
 
 df['Minutes'] = df['Minutes'].apply(convert_minutes)
 
+# Apply official win/loss ±10% bonus
+# Determine winning team per game by summing each team's points
+team_points = df.groupby(['Gamecode', 'Team'])['Points'].sum().reset_index()
+winners = (team_points
+           .loc[team_points.groupby('Gamecode')['Points'].idxmax()]
+           [['Gamecode', 'Team']]
+           .rename(columns={'Team': 'winner'}))
+df = df.merge(winners, on='Gamecode', how='left')
+df['team_won'] = (df['Team'] == df['winner']).astype(int)
+df['fantasy_points'] = df['fantasy_points'] * np.where(df['team_won'] == 1, 1.1, 0.9)
+df = df.drop(columns=['winner'])
+
+# Compute points_share at dataset level (share of team scoring in that game)
+df['team_round_points'] = df.groupby(['Gamecode', 'Team'])['Points'].transform('sum')
+df['points_share'] = (df['Points'] / df['team_round_points'].replace(0, np.nan)).fillna(0)
+
+# Compute minutes_rank within each team-game (best-to-worst minutes)
+df['minutes_rank'] = df.groupby(['Gamecode', 'Team'])['Minutes'].rank(ascending=False)
+
+# Ensure numeric before rolling
+df['IsStarter'] = pd.to_numeric(df['IsStarter'], errors='coerce').fillna(0)
+df['Plusminus'] = pd.to_numeric(df['Plusminus'], errors='coerce').fillna(0)
+
 # Sort by player and round
 df = df.sort_values(['Player', 'Round'])
 
@@ -80,29 +103,25 @@ print("STEP 1: Rolling Averages (Recent Form)")
 print("=" * 60)
 
 def calculate_rolling_stats(group, windows=[3, 5, 10]):
-    """Calculate rolling averages for a player"""
     for window in windows:
-        # Rolling mean
-        group[f'fp_last_{window}'] = group['fantasy_points'].rolling(
-            window=window, min_periods=1
-        ).mean()
+        group[f'fp_last_{window}'] = group['fantasy_points'].rolling(window=window, min_periods=1).mean()
+        group[f'fp_std_{window}'] = group['fantasy_points'].rolling(window=window, min_periods=2).std().fillna(0)
+        group[f'minutes_last_{window}'] = group['Minutes'].rolling(window=window, min_periods=1).mean()
 
-        # Rolling std (consistency)
-        group[f'fp_std_{window}'] = group['fantasy_points'].rolling(
-            window=window, min_periods=2
-        ).std().fillna(0)
+    # Starter rate: share of recent games the player started (predicts minutes)
+    group['starter_rate_3'] = group['IsStarter'].rolling(3, min_periods=1).mean()
+    group['starter_rate_5'] = group['IsStarter'].rolling(5, min_periods=1).mean()
 
-        # Minutes trend
-        group[f'minutes_last_{window}'] = group['Minutes'].rolling(
-            window=window, min_periods=1
-        ).mean()
+    # Plus/minus rolling: net team score when player is on court
+    group['plusminus_last_3'] = group['Plusminus'].rolling(3, min_periods=1).mean()
+    group['plusminus_last_5'] = group['Plusminus'].rolling(5, min_periods=1).mean()
 
     return group
 
 # Apply rolling stats per player
 df = df.groupby('Player', group_keys=False).apply(calculate_rolling_stats)
 
-print("✓ Calculated rolling averages (last 3, 5, 10 games)")
+print("✓ Calculated rolling averages (last 3, 5, 10 games) + starter rate + plus/minus")
 
 print("\n" + "=" * 60)
 print("STEP 2: Form Indicators")
@@ -128,40 +147,52 @@ df = df.groupby('Player', group_keys=False).apply(calculate_form)
 print("✓ Calculated form indicators")
 
 print("\n" + "=" * 60)
-print("STEP 3: Opponent Strength")
+print("STEP 3: Opponent Strength (rolling, no future leakage)")
 print("=" * 60)
 
-# Calculate team defensive ratings (points allowed per game)
-team_defense = df.groupby('Team').agg({
-    'fantasy_points': 'mean'  # Average fantasy points scored by players on this team
-}).rename(columns={'fantasy_points': 'team_offensive_rating'})
+# Build opponent map: for each (Gamecode, Team) → Opponent
+game_team_pairs = df.groupby('Gamecode')['Team'].unique().reset_index()
+opponent_rows = []
+for _, row in game_team_pairs.iterrows():
+    teams = row['Team']
+    if len(teams) == 2:
+        opponent_rows.append({'Gamecode': row['Gamecode'], 'Team': teams[0], 'Opponent': teams[1]})
+        opponent_rows.append({'Gamecode': row['Gamecode'], 'Team': teams[1], 'Opponent': teams[0]})
+opponent_map = pd.DataFrame(opponent_rows)
 
-# For each game, get opponent's defensive strength
-# This requires matching home/away - simplified version:
-df = df.merge(
-    team_defense,
-    left_on='Team',
-    right_index=True,
-    how='left'
-)
+# Avg FP per player per team per game, with Round attached
+game_round = df[['Gamecode', 'Round']].drop_duplicates()
+team_game_fp = (df.groupby(['Gamecode', 'Team'])['fantasy_points']
+                .mean().reset_index()
+                .merge(game_round, on='Gamecode', how='left')
+                .merge(opponent_map, on=['Gamecode', 'Team'], how='left'))
 
-print("✓ Added team strength metrics")
+# For each defending team (Opponent column), compute rolling 5-game defensive rating
+# using only PRIOR rounds (shift(1) removes current game → no leakage)
+rolling_parts = []
+for defending_team, grp in team_game_fp.groupby('Opponent'):
+    grp = grp.sort_values('Round').copy()
+    grp['opp_defensive_rating'] = (grp['fantasy_points']
+                                   .shift(1)
+                                   .rolling(5, min_periods=1)
+                                   .mean())
+    rolling_parts.append(grp[['Gamecode', 'Opponent', 'opp_defensive_rating']])
+
+rolling_def = pd.concat(rolling_parts, ignore_index=True)
+
+# Attach opponent + rolling defensive rating to every player row
+df = df.merge(opponent_map, on=['Gamecode', 'Team'], how='left')
+df = df.merge(rolling_def, on=['Gamecode', 'Opponent'], how='left')
+
+print("✓ Added rolling opponent defensive rating (5-game window, prior rounds only)")
 
 print("\n" + "=" * 60)
 print("STEP 4: Usage & Role Indicators")
 print("=" * 60)
 
 def calculate_usage(group):
-    """Calculate player's role/usage on team"""
-    # Minutes share (approximation - would need team totals for exact)
-    group['minutes_rank'] = group.groupby('Round')['Minutes'].rank(ascending=False)
-
-    # Scoring role
-    group['points_share'] = group['Points'] / group.groupby('Round')['Points'].transform('sum')
-
-    # Usage trend
+    """Rolling usage trend from per-team-game minutes_rank (computed at df level)"""
     group['usage_trend'] = group['minutes_rank'].rolling(5, min_periods=1).mean()
-
     return group
 
 df = df.groupby('Player', group_keys=False).apply(calculate_usage)
@@ -186,14 +217,19 @@ latest_by_player = df.sort_values('Round').groupby('Player').tail(1)
 # Aggregate key features
 prediction_features = latest_by_player[[
     'Player', 'Team', 'Season', 'Phase',
-    'fantasy_points',  # last game
-    'fp_last_3', 'fp_last_5', 'fp_last_10',  # rolling averages
-    'fp_std_3', 'fp_std_5',  # consistency
-    'minutes_last_3', 'minutes_last_5',  # minutes trend
-    'form_trend', 'hot_streak',  # form
-    'team_offensive_rating',  # team strength
-    'games_played',  # experience this season
-    'Minutes', 'Points', 'Valuation'  # last game stats
+    'fantasy_points',
+    'fp_last_3', 'fp_last_5', 'fp_last_10',
+    'fp_std_3', 'fp_std_5', 'fp_std_10',
+    'minutes_last_3', 'minutes_last_5', 'minutes_last_10',
+    'minutes_rank', 'usage_trend',
+    'starter_rate_3', 'starter_rate_5',
+    'plusminus_last_3', 'plusminus_last_5',
+    'form_trend', 'hot_streak',
+    'opp_defensive_rating',
+    'team_won', 'Home',
+    'points_share',
+    'games_played',
+    'Minutes', 'Points', 'TotalRebounds', 'Assistances', 'Valuation'  # API returns 'Assistances' not 'Assists'
 ]].copy()
 
 # Overall season stats

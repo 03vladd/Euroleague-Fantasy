@@ -1,3 +1,18 @@
+# Credentials
+.fantasy_creds.json
+
+# Generated data (fetched from API or produced by pipeline)
+data/
+*.csv
+graphify-out/cache/
+graphify-out/2026-05-26/
+
+# Model binaries (large)
+models/*.pkl
+
+# IDE
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

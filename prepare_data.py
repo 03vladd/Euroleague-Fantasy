@@ -16,7 +16,7 @@ print("STEP 1: Collecting Euroleague game-by-game stats...")
 print("=" * 60)
 
 # Check cache first
-cache_file = Path('data/raw/all_player_game_stats_2024.csv')
+cache_file = Path('data/raw/all_player_game_stats_2025.csv')
 
 if cache_file.exists():
     print(f"Found cached data, loading from {cache_file}")
@@ -25,7 +25,7 @@ if cache_file.exists():
 else:
     print("No cache found, fetching from API...")
     boxscore_el = BoxScoreData("E")
-    euroleague_games = boxscore_el.get_player_boxscore_stats_single_season(2024)
+    euroleague_games = boxscore_el.get_players_boxscore_stats_single_season(2025)
     print(f"✓ Euroleague: {len(euroleague_games)} game performances")
 
     print("\n" + "=" * 60)
@@ -33,7 +33,7 @@ else:
     print("=" * 60)
 
     boxscore_ec = BoxScoreData("U")
-    eurocup_games = boxscore_ec.get_player_boxscore_stats_single_season(2024)
+    eurocup_games = boxscore_ec.get_players_boxscore_stats_single_season(2025)
     print(f"✓ Eurocup: {len(eurocup_games)} game performances")
 
     # Add competition marker
@@ -103,7 +103,7 @@ print("STEP 4: Aggregating season stats...")
 print("=" * 60)
 
 # Cache for season stats
-season_cache = Path('data/raw/all_season_stats_2024.csv')
+season_cache = Path('data/raw/all_season_stats_2025.csv')
 
 if season_cache.exists():
     print(f"Found cached season stats, loading from {season_cache}")
@@ -115,8 +115,8 @@ else:
     player_stats_el = PlayerStats("E")
     player_stats_ec = PlayerStats("U")
 
-    el_season = player_stats_el.get_player_stats_single_season("traditional", 2024)
-    ec_season = player_stats_ec.get_player_stats_single_season("traditional", 2024)
+    el_season = player_stats_el.get_player_stats_single_season("traditional", 2025)
+    ec_season = player_stats_ec.get_player_stats_single_season("traditional", 2025)
 
     el_season['Competition'] = 'Euroleague'
     ec_season['Competition'] = 'Eurocup'
@@ -247,4 +247,3 @@ for _, p in top_value.iterrows():
 print("\n" + "=" * 60)
 print("DONE! Next: Run build_features.py with combined data")
 print("=" * 60)
-# salut
