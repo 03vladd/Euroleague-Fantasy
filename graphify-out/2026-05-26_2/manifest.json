@@ -30,9 +30,9 @@
     "semantic_hash": "e88bd499a767de72bf97793e7b9f7763"
   },
   "/mnt/c/Users/vasiu/UBB/Euroleague/scrape_prices.py": {
-    "mtime": 1779746277.5755105,
-    "ast_hash": "77177de3a4c11c1c0d4edb61a7c2cbd3",
-    "semantic_hash": ""
+    "mtime": 1779740386.7042906,
+    "ast_hash": "8b5b9a38dac441c2c99c6a63b5e55116",
+    "semantic_hash": "8b5b9a38dac441c2c99c6a63b5e55116"
   },
   "/mnt/c/Users/vasiu/UBB/Euroleague/train_model.py": {
     "mtime": 1779743029.1330967,
@@ -103,100 +103,5 @@
     "mtime": 1779742453.4128914,
     "ast_hash": "7b233c1f7e00c0be04ce22328df83c0f",
     "semantic_hash": "7b233c1f7e00c0be04ce22328df83c0f"
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/backtest.py": {
-    "mtime": 1779746948.027339,
-    "ast_hash": "5766a689495d65bbbf0630f7a588d075",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/README.md": {
-    "mtime": 1779738630.2403433,
-    "ast_hash": "8d3ada4605796c8ffa84e332677f3520",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/.pre-commit-config.yaml": {
-    "mtime": 1779738631.438962,
-    "ast_hash": "353d2ffaff1ea43dddd2e62c5f8dc977",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/LICENSE.md": {
-    "mtime": 1779738631.4469666,
-    "ast_hash": "7f9c7aada0cf912d92462e034d2fa370",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/README.md": {
-    "mtime": 1779738631.4542208,
-    "ast_hash": "ad8d91d01202fcd515d1d8007e6d7f2b",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/requirements.txt": {
-    "mtime": 1779738631.6725354,
-    "ast_hash": "2edf90793cf7c596c5b2c7ae5e8c2ae2",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/.github/funding.yml": {
-    "mtime": 1779738631.3897085,
-    "ast_hash": "4cb3d36607cb367ff6ad57038ed82ee9",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/.github/workflows/python-publish.yml": {
-    "mtime": 1779738631.4195423,
-    "ast_hash": "d868d5e507464a6601ec0e30a90ed10e",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/boxscore_data.md": {
-    "mtime": 1779738631.4996026,
-    "ast_hash": "4202616fc5d6630fb82fb1ef883960bc",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/EuroLeagueData.md": {
-    "mtime": 1779738631.484835,
-    "ast_hash": "edbe41bf698d481525ed4448d07ab9f8",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/game_metadata.md": {
-    "mtime": 1779738631.5133343,
-    "ast_hash": "a356a9df5056647e1ccebebb3bd8e6d9",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/game_stats.md": {
-    "mtime": 1779738631.5243115,
-    "ast_hash": "43735d0ba8c3137145fcb710910891f8",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/index.md": {
-    "mtime": 1779738631.5367641,
-    "ast_hash": "4e7b273e4e83dfccc0aef55c3db54086",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/player_stats.md": {
-    "mtime": 1779738631.5627978,
-    "ast_hash": "8cc5ff01168deeb09bc40feaf703e436",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/play_by_play_data.md": {
-    "mtime": 1779738631.5499587,
-    "ast_hash": "7e692e2798ef6753339d7100ffce47e1",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/shot_data.md": {
-    "mtime": 1779738631.5692604,
-    "ast_hash": "0b35d274bcce82e888753aceb0db261a",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/standings.md": {
-    "mtime": 1779738631.5854602,
-    "ast_hash": "e892d86a2156f40959e306b09eed0261",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/team_stats.md": {
-    "mtime": 1779738631.5997963,
-    "ast_hash": "f3b1fa5e542f9c96e2005345ec5238ad",
-    "semantic_hash": ""
-  },
-  "/mnt/c/Users/vasiu/UBB/Euroleague/euroleague_api-main/docs/euroleague_api/utils.md": {
-    "mtime": 1779738631.6123505,
-    "ast_hash": "7a4f6f3126e1ad7037252d1f8beea1bf",
-    "semantic_hash": ""
   }
 }

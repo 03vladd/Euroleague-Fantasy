@@ -1,0 +1,398 @@
+{
+  "communities": {
+    "0": [
+      "euroleague_api_euroleaguedata_euroleaguedata",
+      "euroleague_api_euroleaguedata_euroleaguedata_init",
+      "euroleague_api_euroleaguedata_rationale_14",
+      "euroleague_api_euroleaguedata_rationale_29",
+      "euroleague_api_game_metadata_gamemetadata",
+      "euroleague_api_game_metadata_gamemetadata_get_game_metadata",
+      "euroleague_api_game_metadata_gamemetadata_get_game_metadata_multiple_seasons",
+      "euroleague_api_game_metadata_gamemetadata_get_game_metadata_single_season",
+      "euroleague_api_game_metadata_rationale_22",
+      "euroleague_api_game_metadata_rationale_76",
+      "euroleague_api_game_metadata_rationale_9",
+      "euroleague_api_game_metadata_rationale_95",
+      "euroleague_api_main_src_euroleague_api_game_metadata_py",
+      "euroleague_api_main_src_euroleague_api_game_metadata_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_game_metadata_py_int",
+      "euroleague_api_main_src_euroleague_api_play_by_play_data_py",
+      "euroleague_api_main_src_euroleague_api_shot_data_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_shot_data_py_int",
+      "euroleague_api_main_src_euroleague_api_standings_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_standings_py_int",
+      "euroleague_api_main_src_euroleague_api_standings_py_str",
+      "euroleague_api_main_src_euroleague_api_team_stats_py",
+      "euroleague_api_main_src_euroleague_api_utils_py",
+      "euroleague_api_shot_data_rationale_100",
+      "euroleague_api_shot_data_rationale_22",
+      "euroleague_api_shot_data_rationale_64",
+      "euroleague_api_shot_data_rationale_8",
+      "euroleague_api_shot_data_shotdata",
+      "euroleague_api_shot_data_shotdata_get_game_shot_data",
+      "euroleague_api_shot_data_shotdata_get_game_shot_data_multiple_seasons",
+      "euroleague_api_shot_data_shotdata_get_game_shot_data_single_season",
+      "euroleague_api_standings_rationale_24",
+      "euroleague_api_standings_rationale_7",
+      "euroleague_api_standings_standings",
+      "euroleague_api_standings_standings_get_standings",
+      "euroleague_api_utils_get_requests",
+      "euroleague_api_utils_rationale_17",
+      "response"
+    ],
+    "1": [
+      "euroleague_api_game_stats_gamestats",
+      "euroleague_api_game_stats_gamestats_get_game_data",
+      "euroleague_api_game_stats_gamestats_get_game_report",
+      "euroleague_api_game_stats_gamestats_get_game_reports_range_seasons",
+      "euroleague_api_game_stats_gamestats_get_game_reports_single_season",
+      "euroleague_api_game_stats_gamestats_get_game_stats",
+      "euroleague_api_game_stats_gamestats_get_game_stats_range_seasons",
+      "euroleague_api_game_stats_gamestats_get_game_stats_single_season",
+      "euroleague_api_game_stats_gamestats_get_game_teams_comparison",
+      "euroleague_api_game_stats_gamestats_get_game_teams_comparison_single_season",
+      "euroleague_api_game_stats_rationale_10",
+      "euroleague_api_game_stats_rationale_105",
+      "euroleague_api_game_stats_rationale_141",
+      "euroleague_api_game_stats_rationale_179",
+      "euroleague_api_game_stats_rationale_199",
+      "euroleague_api_game_stats_rationale_221",
+      "euroleague_api_game_stats_rationale_243",
+      "euroleague_api_game_stats_rationale_27",
+      "euroleague_api_game_stats_rationale_70",
+      "euroleague_api_main_src_euroleague_api_game_stats_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_game_stats_py_int",
+      "euroleague_api_main_src_euroleague_api_game_stats_py_str"
+    ],
+    "2": [
+      "euroleague_api_main_src_euroleague_api_team_stats_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_team_stats_py_int",
+      "euroleague_api_main_src_euroleague_api_team_stats_py_str",
+      "euroleague_api_team_stats_rationale_112",
+      "euroleague_api_team_stats_rationale_13",
+      "euroleague_api_team_stats_rationale_152",
+      "euroleague_api_team_stats_rationale_198",
+      "euroleague_api_team_stats_rationale_240",
+      "euroleague_api_team_stats_rationale_31",
+      "euroleague_api_team_stats_teamstats",
+      "euroleague_api_team_stats_teamstats_get_team_advanced_stats_single_game",
+      "euroleague_api_team_stats_teamstats_get_team_stats",
+      "euroleague_api_team_stats_teamstats_get_team_stats_all_seasons",
+      "euroleague_api_team_stats_teamstats_get_team_stats_range_seasons",
+      "euroleague_api_team_stats_teamstats_get_team_stats_single_season",
+      "euroleague_tune_model_objective",
+      "euroleague_tune_model_rationale_1",
+      "euroleague_tune_model_xgb3_safe_float",
+      "float",
+      "trial",
+      "tune_model_py"
+    ],
+    "3": [
+      "bool",
+      "euroleague_api_boxscore_data_boxscoredata",
+      "euroleague_api_boxscore_data_boxscoredata_get_boxscore_data",
+      "euroleague_api_boxscore_data_boxscoredata_get_game_boxscore_quarter_data",
+      "euroleague_api_boxscore_data_boxscoredata_get_game_boxscore_quarter_data_single_season",
+      "euroleague_api_boxscore_data_boxscoredata_get_player_boxscore_stats_data",
+      "euroleague_api_boxscore_data_boxscoredata_get_player_boxscore_stats_round",
+      "euroleague_api_boxscore_data_boxscoredata_get_player_boxscore_stats_single_season",
+      "euroleague_api_boxscore_data_rationale_116",
+      "euroleague_api_boxscore_data_rationale_13",
+      "euroleague_api_boxscore_data_rationale_169",
+      "euroleague_api_boxscore_data_rationale_270",
+      "euroleague_api_boxscore_data_rationale_30",
+      "euroleague_api_boxscore_data_rationale_76",
+      "euroleague_api_main_src_euroleague_api_boxscore_data_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_boxscore_data_py_int",
+      "euroleague_api_main_src_euroleague_api_boxscore_data_py_str",
+      "euroleague_api_main_src_euroleague_api_utils_py_str",
+      "euroleague_api_utils_raise_error",
+      "euroleague_api_utils_rationale_52"
+    ],
+    "4": [
+      "euroleague_api_euroleaguedata_euroleaguedata_get_gamecodes_round",
+      "euroleague_api_euroleaguedata_euroleaguedata_get_gamecodes_season",
+      "euroleague_api_euroleaguedata_euroleaguedata_get_range_seasons_data",
+      "euroleague_api_euroleaguedata_euroleaguedata_get_round_data_from_game_data",
+      "euroleague_api_euroleaguedata_euroleaguedata_get_season_data_from_game_data",
+      "euroleague_api_euroleaguedata_euroleaguedata_make_season_game_url",
+      "euroleague_api_euroleaguedata_rationale_118",
+      "euroleague_api_euroleaguedata_rationale_161",
+      "euroleague_api_euroleaguedata_rationale_243",
+      "euroleague_api_euroleaguedata_rationale_57",
+      "euroleague_api_euroleaguedata_rationale_80",
+      "euroleague_api_main_src_euroleague_api_euroleaguedata_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_euroleaguedata_py_int",
+      "euroleague_api_main_src_euroleague_api_euroleaguedata_py_str",
+      "euroleague_api_main_src_euroleague_api_utils_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_utils_py_int",
+      "euroleague_api_utils_get_data_over_collection_of_games",
+      "euroleague_api_utils_rationale_87"
+    ],
+    "5": [
+      "euroleague_api_boxscore_data_rationale_236",
+      "euroleague_api_main_src_euroleague_api_play_by_play_data_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_play_by_play_data_py_int",
+      "euroleague_api_play_by_play_data_playbyplay",
+      "euroleague_api_play_by_play_data_playbyplay_get_game_play_by_play_data",
+      "euroleague_api_play_by_play_data_playbyplay_get_game_play_by_play_data_multiple_seasons",
+      "euroleague_api_play_by_play_data_playbyplay_get_game_play_by_play_data_single_season",
+      "euroleague_api_play_by_play_data_playbyplay_get_pbp_data_with_lineups",
+      "euroleague_api_play_by_play_data_playbyplay_get_pbp_data_with_lineups_multiple_seasons",
+      "euroleague_api_play_by_play_data_playbyplay_get_play_by_play_data_round",
+      "euroleague_api_play_by_play_data_rationale_123",
+      "euroleague_api_play_by_play_data_rationale_13",
+      "euroleague_api_play_by_play_data_rationale_148",
+      "euroleague_api_play_by_play_data_rationale_29",
+      "euroleague_api_play_by_play_data_rationale_318",
+      "euroleague_api_play_by_play_data_rationale_338"
+    ],
+    "6": [
+      "euroleague_api_main_src_euroleague_api_player_stats_py_dataframe",
+      "euroleague_api_main_src_euroleague_api_player_stats_py_int",
+      "euroleague_api_main_src_euroleague_api_player_stats_py_str",
+      "euroleague_api_player_stats_playerstats_get_player_stats",
+      "euroleague_api_player_stats_playerstats_get_player_stats_all_seasons",
+      "euroleague_api_player_stats_playerstats_get_player_stats_leaders_all_seasons",
+      "euroleague_api_player_stats_playerstats_get_player_stats_range_seasons",
+      "euroleague_api_player_stats_playerstats_get_player_stats_single_season",
+      "euroleague_api_player_stats_rationale_111",
+      "euroleague_api_player_stats_rationale_29",
+      "euroleague_api_player_stats_rationale_352",
+      "euroleague_api_player_stats_rationale_393",
+      "euroleague_api_player_stats_rationale_440",
+      "euroleague_api_player_stats_rationale_492"
+    ],
+    "7": [
+      "boxscore_datadoc_boxscoredata",
+      "concept_shotdata",
+      "euroleague_api_player_stats_rationale_11",
+      "euroleague_api_readme",
+      "euroleaguedatamd_euroleaguedata",
+      "game_metadatadoc_gamemetadata",
+      "game_statsdoc_gamestats",
+      "indexdoc_euroleagueapi",
+      "play_by_play_datadoc_playbyplay",
+      "player_statsdoc_playerstats",
+      "shot_datadoc_shotdata",
+      "standingsdoc_standings",
+      "team_statsdoc_teamstats",
+      "utilsdoc_utils"
+    ],
+    "8": [
+      "build_features_py",
+      "euroleague_build_features_calculate_fantasy_points",
+      "euroleague_build_features_calculate_form",
+      "euroleague_build_features_calculate_rolling_stats",
+      "euroleague_build_features_calculate_usage",
+      "euroleague_build_features_convert_minutes",
+      "euroleague_build_features_rationale_1",
+      "euroleague_build_features_rationale_131",
+      "euroleague_build_features_rationale_194",
+      "euroleague_build_features_rationale_26"
+    ],
+    "9": [
+      "models_best_params_colsample_bytree",
+      "models_best_params_gamma",
+      "models_best_params_json",
+      "models_best_params_learning_rate",
+      "models_best_params_max_depth",
+      "models_best_params_min_child_weight",
+      "models_best_params_n_estimators",
+      "models_best_params_reg_alpha",
+      "models_best_params_reg_lambda",
+      "models_best_params_subsample"
+    ],
+    "10": [
+      "euroleague_scrape_prices_looks_like_player_list",
+      "euroleague_scrape_prices_rationale_1",
+      "euroleague_scrape_prices_rationale_36",
+      "euroleague_scrape_prices_save",
+      "euroleague_scrape_prices_scrape",
+      "scrape_prices_py"
+    ],
+    "11": [
+      "concept_euroleague_api",
+      "concept_euroleague_fantasy",
+      "euroleague_api_precommit",
+      "euroleague_api_publish_workflow",
+      "euroleague_api_requirements",
+      "readme_euroleague_fantasy"
+    ],
+    "12": [
+      "euroleague_main_main",
+      "euroleague_main_print_header",
+      "euroleague_main_rationale_1",
+      "euroleague_main_run_step",
+      "main_py"
+    ],
+    "13": [
+      "euroleague_prepare_data_calculate_fantasy_points",
+      "euroleague_prepare_data_calculate_fp_from_season_stats",
+      "euroleague_prepare_data_convert_minutes",
+      "euroleague_prepare_data_rationale_1",
+      "prepare_data_py"
+    ],
+    "14": [
+      "euroleague_optimize_team_rationale_1",
+      "euroleague_optimize_team_rationale_29",
+      "optimize_team_py"
+    ],
+    "15": [
+      "euroleague_optimize_team_v2_rationale_1",
+      "optimize_team_v2_py"
+    ],
+    "16": [
+      "euroleague_train_model_rationale_1",
+      "train_model_py"
+    ],
+    "17": [
+      "check_names_py"
+    ],
+    "18": [
+      "euroleague_api_main_src_euroleague_api_init_py"
+    ],
+    "19": [
+      "euroleague_api_license"
+    ],
+    "20": [
+      "euroleague_api_funding"
+    ]
+  },
+  "cohesion": {
+    "0": 0.09815078236130868,
+    "1": 0.18181818181818182,
+    "2": 0.1523809523809524,
+    "3": 0.19473684210526315,
+    "4": 0.16993464052287582,
+    "5": 0.23333333333333334,
+    "6": 0.2857142857142857,
+    "7": 0.3956043956043956,
+    "8": 0.2,
+    "9": 0.2,
+    "10": 0.3333333333333333,
+    "11": 0.4,
+    "12": 0.7,
+    "13": 0.4,
+    "14": 0.6666666666666666,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0
+  },
+  "gods": [
+    {
+      "id": "euroleague_api_euroleaguedata_euroleaguedata",
+      "label": "EuroLeagueData",
+      "degree": 43
+    },
+    {
+      "id": "euroleague_api_utils_get_requests",
+      "label": "get_requests()",
+      "degree": 23
+    },
+    {
+      "id": "euroleague_api_boxscore_data_boxscoredata",
+      "label": "BoxScoreData",
+      "degree": 22
+    },
+    {
+      "id": "euroleague_api_game_stats_gamestats",
+      "label": "GameStats",
+      "degree": 14
+    },
+    {
+      "id": "player_statsdoc_playerstats",
+      "label": "PlayerStats Class",
+      "degree": 14
+    },
+    {
+      "id": "euroleague_api_utils_raise_error",
+      "label": "raise_error()",
+      "degree": 13
+    },
+    {
+      "id": "euroleague_api_readme",
+      "label": "Euroleague API README",
+      "degree": 12
+    },
+    {
+      "id": "euroleaguedatamd_euroleaguedata",
+      "label": "EuroLeagueData Base Class",
+      "degree": 11
+    },
+    {
+      "id": "euroleague_api_main_src_euroleague_api_game_stats_py_int",
+      "label": "int",
+      "degree": 10
+    },
+    {
+      "id": "euroleague_api_main_src_euroleague_api_game_stats_py_dataframe",
+      "label": "DataFrame",
+      "degree": 10
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Euroleague Fantasy ML Project",
+      "target": "Euroleague API Python Package",
+      "source_files": [
+        "README.md",
+        "euroleague_api-main/README.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "conceptually_related_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `Euroleague Fantasy ML Project` unexpectedly reaches hub `Euroleague API Python Package`"
+    },
+    {
+      "source": "Euroleague Fantasy Competition ML Prediction",
+      "target": "Euroleague API Python Package",
+      "source_files": [
+        "README.md",
+        "euroleague_api-main/README.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "conceptually_related_to",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; peripheral node `Euroleague Fantasy Competition ML Prediction` unexpectedly reaches hub `Euroleague API Python Package`"
+    },
+    {
+      "source": "str",
+      "target": "EuroLeagueData",
+      "source_files": [
+        "euroleague_api-main/src/euroleague_api/game_stats.py",
+        "euroleague_api-main/src/euroleague_api/EuroLeagueData.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities; peripheral node `str` unexpectedly reaches hub `EuroLeagueData`"
+    },
+    {
+      "source": "A class for getting the player-level stats and data.      Args:         competit",
+      "target": "PlayerStats Class",
+      "source_files": [
+        "euroleague_api-main/src/euroleague_api/player_stats.py",
+        "euroleague_api-main/docs/euroleague_api/player_stats.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "rationale_for",
+      "why": "crosses file types (code \u2194 doc); peripheral node `A class for getting the player-level stats and data.      Args:         competit` unexpectedly reaches hub `PlayerStats Class`"
+    },
+    {
+      "source": "BoxScoreData",
+      "target": "EuroLeagueData",
+      "source_files": [
+        "euroleague_api-main/src/euroleague_api/boxscore_data.py",
+        "euroleague_api-main/src/euroleague_api/EuroLeagueData.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    }
+  ],
+  "tokens": {
+    "input": 32697,
+    "output": 4774
+  }
+}
