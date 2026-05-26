@@ -32,7 +32,8 @@ ROSTER       = 10
 STARTERS     = 6
 MAX_PER_TEAM = 6
 REQ          = {'G': 4, 'F': 4, 'C': 2}
-DNP_DISCOUNT = 0.5   # adj_fp = predicted_fp × (1 − DNP_DISCOUNT × dnp_rate_last5)
+DNP_DISCOUNT        = 0.5   # adj_fp = predicted_fp × (1 − DNP_DISCOUNT × dnp_rate_last5)
+CAPTAIN_STD_PENALTY = 0.3   # captain score = adj_fp − CAPTAIN_STD_PENALTY × fp_std_5
 
 # ── Load predictions ──────────────────────────────────────────
 df = pd.read_csv('data/processed/next_round_predictions.csv')
@@ -67,6 +68,13 @@ if 'dnp_rate_last5' in df.columns:
 else:
     df['adj_predicted_fp'] = df['predicted_fp']
     print("\nWarning: dnp_rate_last5 not found — run build_features.py to enable DNP discount")
+
+# Captain reliability score: penalise high-variance players for the captaincy
+if 'fp_std_5' in df.columns:
+    df['captain_score'] = (df['adj_predicted_fp']
+                           - CAPTAIN_STD_PENALTY * df['fp_std_5']).clip(lower=0)
+else:
+    df['captain_score'] = df['adj_predicted_fp']
 
 # ── Schedule fetch (before LP — needed for D2 captain constraint) ─────────────
 tm          = {}       # {team_code: game_datetime}
@@ -208,11 +216,12 @@ def build_prob(name, use_positions):
     if not coach_df.empty:
         kv = {t: LpVariable(f"k_{t}", cat='Binary') for t in coach_df.index}
 
-    fp = df['adj_predicted_fp']
+    fp  = df['adj_predicted_fp']
+    cap = df['captain_score']        # reliability-adjusted: penalises high variance
     prob += lpSum(
-        fp[i] * 0.5 * pv[i] +
-        fp[i] * 0.5 * sv[i] +
-        fp[i] * cv[i]
+        fp[i]  * 0.5 * pv[i] +      # bench baseline
+        fp[i]  * 0.5 * sv[i] +      # starter bonus
+        cap[i] * cv[i]               # captain bonus (consistency-penalised)
         for i in df.index
     ) + lpSum(
         coach_df.loc[t, 'exp_coach_fp'] * kv[t] for t in kv
@@ -405,3 +414,21 @@ if args.round is not None and tm:
 print("\n" + "=" * 60)
 print("DONE! Ready to submit your team")
 print("=" * 60)
+
+# ── Auto-write my_team.json so transfer_optimizer knows current squad ─────────
+import json as _json
+starters_list = [df.loc[i, 'Player'] for i in selected if starter_vars[i].varValue == 1]
+all_players   = [df.loc[i, 'Player'] for i in selected]
+cap_name      = df.loc[captain, 'Player'] if captain is not None else None
+_squad = {
+    "round":            args.round,
+    "players":          all_players,
+    "starters":         starters_list,
+    "captain":          cap_name,
+    "coach":            sel_coach,
+    "budget_remaining": round(float(BUDGET - budget_used), 1),
+}
+with open('my_team.json', 'w') as _f:
+    _json.dump(_squad, _f, indent=2)
+print(f"\n✓ Squad saved to my_team.json (used by transfer_optimizer.py)")
+print("  Edit my_team.json if you override any picks before submitting.")

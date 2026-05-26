@@ -1,0 +1,9 @@
+pandas==2.3.3
+numpy==2.2.6
+xgboost==3.2.0
+scikit-learn==1.7.2
+pulp==3.3.2
+playwright==1.60.0
+plotly==6.6.0
+optuna==4.8.0
+euroleague_api==0.1.1

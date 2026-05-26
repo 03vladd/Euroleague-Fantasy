@@ -7,6 +7,12 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
+try:
+    from euroleague_api.schedule import Schedule as _ELSchedule
+    _SCHEDULE_AVAILABLE = True
+except ImportError:
+    _SCHEDULE_AVAILABLE = False
+
 print("=" * 60)
 print("FEATURE ENGINEERING")
 print("=" * 60)
@@ -93,6 +99,21 @@ df['minutes_rank'] = df.groupby(['Gamecode', 'Team'])['Minutes'].rank(ascending=
 df['IsStarter'] = pd.to_numeric(df['IsStarter'], errors='coerce').fillna(0)
 df['Plusminus'] = pd.to_numeric(df['Plusminus'], errors='coerce').fillna(0)
 
+# Merge player positions (G/F/C) from the fantasy analysis file
+_POSITION_MAP = {'Guard': 'G', 'Forward': 'F', 'Center': 'C'}
+try:
+    _pos = (pd.read_csv('euroleague_fantasy_analysis_complete.csv')
+            [['player_name', 'estimated_position']]
+            .drop_duplicates('player_name')
+            .rename(columns={'player_name': 'Player', 'estimated_position': 'Position'}))
+    _pos['Position'] = _pos['Position'].map(_POSITION_MAP).fillna('?')
+    df = df.merge(_pos, on='Player', how='left')
+    df['Position'] = df['Position'].fillna('?')
+    print(f"Position data: {(_pos['Position'] != '?').sum()} players mapped")
+except FileNotFoundError:
+    df['Position'] = '?'
+    print("No position file — position-specific defense disabled")
+
 # Sort by player and round
 df = df.sort_values(['Player', 'Round'])
 
@@ -126,12 +147,52 @@ def calculate_rolling_stats(group, windows=[3, 5, 10]):
     away_mean = group['fantasy_points'].where(group['Home'] == 0).expanding().mean()
     group['home_advantage'] = (home_mean - away_mean).fillna(0)
 
+    # Consistency (coefficient of variation): lower = more reliable for captain pick
+    group['fp_cv_5']  = group['fp_std_5']  / (group['fp_last_5'].abs()  + 1e-6)
+    group['fp_cv_10'] = group['fp_std_10'] / (group['fp_last_10'].abs() + 1e-6)
+
     return group
 
 # Apply rolling stats per player
 df = df.groupby('Player', group_keys=False).apply(calculate_rolling_stats)
 
 print("✓ Calculated rolling averages (last 3, 5, 10 games) + starter rate + plus/minus")
+
+print("\n" + "=" * 60)
+print("STEP 1b: Rest / Fatigue Features (days_rest, short_rest)")
+print("=" * 60)
+
+if _SCHEDULE_AVAILABLE:
+    try:
+        _sched = _ELSchedule('E').get_schedule(2025)
+        _sched['game_date'] = pd.to_datetime(_sched['date'], format='%b %d, %Y')
+        _home = _sched[['gameday', 'homecode', 'game_date']].rename(
+            columns={'gameday': 'Round', 'homecode': 'Team'})
+        _away = _sched[['gameday', 'awaycode', 'game_date']].rename(
+            columns={'gameday': 'Round', 'awaycode': 'Team'})
+        _team_dates = (pd.concat([_home, _away])
+                       .drop_duplicates(['Round', 'Team'])
+                       .sort_values(['Team', 'game_date'])   # sort by actual date, not round
+                       .reset_index(drop=True))
+        # clip(lower=0) handles rescheduled games played out of round order
+        _team_dates['days_rest'] = (_team_dates.groupby('Team')['game_date']
+                                    .diff().dt.days.fillna(7).clip(lower=0))
+        # short_rest = inter-round gap ≤ 3 days (compressed EL scheduling, not NBA B2Bs)
+        _team_dates['short_rest'] = (_team_dates['days_rest'] <= 3).astype(int)
+        df = df.merge(_team_dates[['Round', 'Team', 'days_rest', 'short_rest']],
+                      on=['Round', 'Team'], how='left')
+        df['days_rest']    = df['days_rest'].fillna(7)
+        df['short_rest'] = df['short_rest'].fillna(0)
+        print(f"✓ Added days_rest + short_rest  "
+              f"(B2B games: {df['short_rest'].sum():.0f})")
+    except Exception as e:
+        df['days_rest']    = 7
+        df['short_rest'] = 0
+        print(f"  Schedule fetch failed ({e}) — days_rest=7, short_rest=0")
+else:
+    df['days_rest']    = 7
+    df['short_rest'] = 0
+    print("  Schedule API unavailable — days_rest=7, short_rest=0")
 
 print("\n" + "=" * 60)
 print("STEP 2: Form Indicators")
@@ -196,6 +257,26 @@ df = df.merge(rolling_def, on=['Gamecode', 'Opponent'], how='left')
 
 print("✓ Added rolling opponent defensive rating (5-game window, prior rounds only)")
 
+# Position-specific defensive rating: avg FP allowed to G/F/C per opponent team
+if df['Position'].ne('?').any():
+    pos_game_fp = (df[df['Position'] != '?']
+                   .groupby(['Gamecode', 'Round', 'Opponent', 'Position'])['fantasy_points']
+                   .mean().reset_index()
+                   .rename(columns={'Opponent': 'def_team', 'fantasy_points': 'fp_vs_pos'}))
+    pos_parts = []
+    for (def_team, pos), grp in pos_game_fp.groupby(['def_team', 'Position']):
+        grp = grp.sort_values('Round').copy()
+        grp['opp_def_pos_rating'] = grp['fp_vs_pos'].shift(1).rolling(5, min_periods=1).mean()
+        pos_parts.append(grp[['Gamecode', 'def_team', 'Position', 'opp_def_pos_rating']])
+    pos_def = pd.concat(pos_parts, ignore_index=True).rename(columns={'def_team': 'Opponent'})
+    df = df.merge(pos_def, on=['Gamecode', 'Opponent', 'Position'], how='left')
+    # Fall back to team-level rating for unknown positions
+    df['opp_def_pos_rating'] = df['opp_def_pos_rating'].fillna(df['opp_defensive_rating'])
+    print("✓ Added position-specific opponent defensive rating (G/F/C split)")
+else:
+    df['opp_def_pos_rating'] = df['opp_defensive_rating']
+    print("  No position data — opp_def_pos_rating = opp_defensive_rating")
+
 print("\n" + "=" * 60)
 print("STEP 4: Usage & Role Indicators")
 print("=" * 60)
@@ -240,7 +321,10 @@ prediction_features = latest_by_player[[
     'points_share',
     'games_played',
     'dnp_rate_last5', 'dnp_rate_last10', 'home_advantage',
-    'Minutes', 'Points', 'TotalRebounds', 'Assistances', 'Valuation'  # API returns 'Assistances' not 'Assists'
+    'fp_cv_5', 'fp_cv_10',
+    'days_rest', 'short_rest',
+    'opp_def_pos_rating',
+    'Minutes', 'Points', 'TotalRebounds', 'Assistances', 'Valuation'
 ]].copy()
 
 # Overall season stats
@@ -260,8 +344,11 @@ prediction_features = prediction_features.merge(
     suffixes=('', '_season')
 )
 
-# Load prices
-prices = pd.read_csv('euroleague_prices.csv')
+# Load prices — prefer processed file (full season coverage) over scraper output
+_price_path = ('data/processed/all_players_with_prices.csv'
+               if Path('data/processed/all_players_with_prices.csv').exists()
+               else 'euroleague_prices.csv')
+prices = pd.read_csv(_price_path)[['player.name', 'price']].drop_duplicates('player.name')
 prediction_features = prediction_features.merge(
     prices,
     left_on='Player',

@@ -224,9 +224,10 @@ for r in test_rounds:
     latest = pre_r.sort_values('Round').groupby('Player').tail(1).copy()
     latest['predicted_fp'] = model.predict(latest[FEATURE_COLS])
 
-    # Attach prices and positions
+    # Attach prices; Position already in df from build_features.py
     latest = latest.merge(prices, on='Player', how='inner')
-    latest = latest.merge(pos_df, on='Player', how='left')
+    if 'Position' not in latest.columns:
+        latest = latest.merge(pos_df, on='Player', how='left')
     latest['Position'] = latest['Position'].fillna('?')
 
     if len(latest) < ROSTER:
@@ -241,15 +242,18 @@ for r in test_rounds:
     actual_r = (df[df['Round'] == r][['Player', 'fantasy_points', 'Team']]
                 .rename(columns={'fantasy_points': 'actual_fp'}))
 
+    CAPTAIN_STD_PENALTY = 0.3
+
     # Score predicted team on actual FP
-    def score_team(team_df, actual_fp_col, pred_col):
-        """Score a team using 6-starter / 4-bench / 1-captain rules."""
+    def score_team(team_df, actual_fp_col, pred_col, cap_col=None):
+        """Score a team using 6-starter / 4-bench / 1-captain rules.
+        cap_col: column used for captain selection (reliability-adjusted if provided)."""
         t = team_df.copy()
         t['actual_fp'] = t['actual_fp'] if 'actual_fp' in t.columns else 0.0
-        # Assign starter slots to top-6 by predicted score (optimal ordering)
         top6 = t.nlargest(6, pred_col).index
         t['is_starter'] = t.index.map(lambda i: i in set(top6))
-        cap_idx = t.loc[top6, pred_col].idxmax()
+        _cap_col = cap_col if (cap_col and cap_col in t.columns) else pred_col
+        cap_idx = t.loc[top6, _cap_col].idxmax()
         t['is_captain'] = t.index == cap_idx
         t['effective_fp'] = np.where(
             t['is_captain'], t[actual_fp_col] * 2,
@@ -259,8 +263,14 @@ for r in test_rounds:
 
     pred_scored = pred_team.merge(actual_r[['Player', 'actual_fp']], on='Player', how='left')
     pred_scored['actual_fp'] = pred_scored['actual_fp'].fillna(0.0)
-    pred_total = score_team(pred_scored, 'actual_fp', 'predicted_fp')
-    # Identify captain for reporting (top predicted among starters)
+    # Apply captain reliability score (consistency penalty) matching the optimizer
+    if 'fp_std_5' in pred_scored.columns:
+        pred_scored['captain_score'] = (pred_scored['predicted_fp']
+                                        - CAPTAIN_STD_PENALTY * pred_scored['fp_std_5']).clip(lower=0)
+        pred_total = score_team(pred_scored, 'actual_fp', 'predicted_fp', cap_col='captain_score')
+    else:
+        pred_total = score_team(pred_scored, 'actual_fp', 'predicted_fp')
+    # Identify captain for reporting
     top6_pred = pred_scored.nlargest(6, 'predicted_fp')
     cap_idx = top6_pred['predicted_fp'].idxmax()
     cap_player = pred_scored.loc[cap_idx, 'Player']

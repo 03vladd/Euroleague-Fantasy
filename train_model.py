@@ -79,6 +79,15 @@ feature_cols = [
     # Risk & home tendency
     'dnp_rate_last5', 'dnp_rate_last10', 'home_advantage',
 
+    # Consistency (lower = more reliable; used for captain selection)
+    'fp_cv_5', 'fp_cv_10',
+
+    # Rest & fatigue
+    'days_rest', 'short_rest',
+
+    # Position-specific opponent defense
+    'opp_def_pos_rating',
+
     # Experience
     'games_played',
 
@@ -185,7 +194,9 @@ latest['predicted_fp'] = final_model.predict(X_pred)
 latest['predicted_value'] = latest['predicted_fp'] / latest['price']
 
 # Save predictions
-extra_cols = [c for c in ['dnp_rate_last5', 'dnp_rate_last10', 'home_advantage']
+extra_cols = [c for c in ['dnp_rate_last5', 'dnp_rate_last10', 'home_advantage',
+                           'fp_cv_5', 'fp_cv_10', 'fp_std_5',
+                           'days_rest', 'short_rest', 'opp_def_pos_rating']
               if c in latest.columns]
 latest_relevant = latest[[
     'Player', 'Team', 'price',
