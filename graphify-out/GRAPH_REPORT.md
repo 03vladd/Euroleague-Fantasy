@@ -1,16 +1,16 @@
 # Graph Report - Euroleague  (2026-05-26)
 
 ## Corpus Check
-- 36 files · ~28,367 words
+- 37 files · ~28,621 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 656 nodes · 1005 edges · 53 communities (28 shown, 25 thin omitted)
+- 665 nodes · 1013 edges · 55 communities (30 shown, 25 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 83 edges (avg confidence: 0.54)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `565ea04f`
+- Built from commit: `8c608d9a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -66,6 +66,8 @@
 - [[_COMMUNITY_Community 50|Community 50]]
 - [[_COMMUNITY_Community 51|Community 51]]
 - [[_COMMUNITY_Community 52|Community 52]]
+- [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `EuroLeagueData` - 48 edges
@@ -91,11 +93,11 @@
 - `PlayByPlay` --uses--> `BoxScoreData`  [INFERRED]
   euroleague_api-main/src/euroleague_api/play_by_play_data.py → euroleague_api-main/src/euroleague_api/boxscore_data.py
 
-## Communities (53 total, 25 thin omitted)
+## Communities (55 total, 25 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.06
-Nodes (53): bool, EuroLeagueData, A function that returns the game metadata, e.g. gamecodes of a round         in, Base class for collecting Euroleague and Eurocup competition's data.      Args:, A wrapper function for getting game data for all games in a single         round, A wrapper function for getting game data for all games in a single         seaso, A wrapper function with the all game data in a range of seasons          Args:, init function for the EuroLeagueData class.          Args:             competiti (+45 more)
+Cohesion: 0.08
+Nodes (40): bool, EuroLeagueData, GameStats, DataFrame, PlayByPlay, int, DataFrame, ShotData (+32 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.13
@@ -107,19 +109,19 @@ Nodes (4): objective(), Hyperparameter tuning + feature importance analysis.  Ru
 
 ### Community 3 - "Community 3"
 Cohesion: 0.13
-Nodes (25): BoxScoreData, The players' and team's total stats of a particular game.          Args:, A class for getting box-score data      Args:         competition (str, optional, A function that gets the boxscore quarter data of all games in a         particu, A function that gets the boxscore quarter data of *all* games in a         singl, A function that return the player boxscore stats for all games in a         sing, A function that return the player boxscore stats for all games in a         sing, A helper function that gets the boxscore data of a particular data.          Arg (+17 more)
+Nodes (26): BoxScoreData, The players' and team's total stats of a particular game.          Args:, A class for getting box-score data      Args:         competition (str, optional, A function that gets the boxscore quarter data of all games in a         particu, A function that gets the boxscore quarter data of *all* games in a         singl, A function that gets the play-by-play data of *all* games in a range of, A function that return the player boxscore stats for all games in a         sing, A function that return the player boxscore stats for all games in a         sing (+18 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.05
 Nodes (26): Ancestors (in MRO), Attributes, Class variables, Classes, code:python3 (BASE_URL), code:python3 (V1), code:python3 (V2), code:python3 (V3) (+18 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.20
-Nodes (14): A function that gets the play-by-play data of *all* games in a range of, DataFrame, PlayByPlay, int, PlayByPlay, A function that gets the play-by-play data of *all* games in a single         se, A function that gets the play-by-play data of *all* games in a range of, A class for getting the game play-by-play data.      Args:         competition ( (+6 more)
+Cohesion: 0.14
+Nodes (17): A function that returns the game metadata, e.g. gamecodes of a round         in, Base class for collecting Euroleague and Eurocup competition's data.      Args:, A wrapper function for getting game data for all games in a single         round, A wrapper function for getting game data for all games in a single         seaso, A wrapper function with the all game data in a range of seasons          Args:, init function for the EuroLeagueData class.          Args:             competiti, Concatenates the base URL and makes the game url.          Args:              se, A function that returns the game metadata, e.g. gamecodes of season          Arg (+9 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.16
-Nodes (26): BoxScoreData Class, Shot Data Concept, DataFrame, PlayerStats, int, str, A class for getting the player-level stats and data.      Args:         competit, A wrapper function for collecting the leading players in a given         stat ca (+18 more)
+Cohesion: 0.24
+Nodes (14): DataFrame, PlayerStats, int, str, A class for getting the player-level stats and data.      Args:         competit, A wrapper function for collecting the leading players in a given         stat ca, A wrapper function for getting the players' stats for         - all seasons, The players' stats for *all* seasons.          Args:              endpoint (str) (+6 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.05
@@ -138,8 +140,8 @@ Cohesion: 0.29
 Nodes (4): looks_like_player_list(), Scrape player prices from EuroLeague Fantasy Challenge.  The site is a Flutter W, Walk a JSON blob and return a flat list of dicts that have     both a name field, Walk a JSON blob and return a flat list of dicts that have     both a name field
 
 ### Community 11 - "Community 11"
-Cohesion: 0.40
-Nodes (6): Euroleague API Python Package, Euroleague Fantasy Competition ML Prediction, Pre-commit Configuration, Python Publish GitHub Workflow, Euroleague API Requirements, Euroleague Fantasy ML Project
+Cohesion: 0.25
+Nodes (18): BoxScoreData Class, Euroleague API Python Package, Euroleague Fantasy Competition ML Prediction, Shot Data Concept, Pre-commit Configuration, Python Publish GitHub Workflow, Euroleague API README, Euroleague API Requirements (+10 more)
 
 ### Community 12 - "Community 12"
 Cohesion: 0.70
@@ -197,25 +199,33 @@ Nodes (5): DataFrame, str, optimise_team(), backtest.py — Round-by-round backt
 Cohesion: 0.40
 Nodes (5): Class variables, code:python3 (BASE_URL), code:python3 (V1), code:python3 (V2), code:python3 (V3)
 
+### Community 53 - "Community 53"
+Cohesion: 0.27
+Nodes (9): GameMetadata, Retrieves game metadata for a given gamecode, such as stadium,         capacity, A function that gets the metadata of all games in a single round.          Args:, A function to retrieve game metadata for all games in a single season., A class for getting the game related metadata, such as     stadum, capacity and, A function that gets the metadata of *all* games in a range of seasons, DataFrame, GameMetadata (+1 more)
+
+### Community 54 - "Community 54"
+Cohesion: 0.22
+Nodes (8): Claude Code — Euroleague Fantasy Project, code:block1 (graphify update .), code:block2 (python3 prepare_data.py      # ~6h due to API rate limits (0), End-of-session checklist (do this before signing off), Key fixes applied (don't revert), Pipeline run order, Price scraping, Season naming
+
 ## Knowledge Gaps
-- **114 isolated node(s):** `DataFrame`, `str`, `Trial`, `str`, `n_estimators` (+109 more)
+- **119 isolated node(s):** `DataFrame`, `str`, `Trial`, `str`, `n_estimators` (+114 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **25 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `EuroLeagueData` connect `Community 0` to `Community 1`, `Community 3`, `Community 5`, `Community 6`?**
-  _High betweenness centrality (0.039) - this node is a cross-community bridge._
-- **Why does `EuroLeagueData` connect `Community 0` to `Community 1`, `Community 3`, `Community 5`, `Community 6`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
-- **Why does `PlayerStats Class` connect `Community 6` to `Community 0`?**
+- **Why does `EuroLeagueData` connect `Community 0` to `Community 1`, `Community 3`, `Community 5`, `Community 6`, `Community 53`?**
+  _High betweenness centrality (0.038) - this node is a cross-community bridge._
+- **Why does `EuroLeagueData` connect `Community 5` to `Community 0`, `Community 1`, `Community 3`, `Community 6`, `Community 53`?**
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
+- **Why does `PlayerStats Class` connect `Community 6` to `Community 0`, `Community 11`?**
   _High betweenness centrality (0.019) - this node is a cross-community bridge._
-- **Are the 29 inferred relationships involving `EuroLeagueData` (e.g. with `BoxScoreData` and `int`) actually correct?**
+- **Are the 29 inferred relationships involving `EuroLeagueData` (e.g. with `int` and `str`) actually correct?**
   _`EuroLeagueData` has 29 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 29 inferred relationships involving `EuroLeagueData` (e.g. with `BoxScoreData` and `GameMetadata`) actually correct?**
   _`EuroLeagueData` has 29 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 8 inferred relationships involving `BoxScoreData` (e.g. with `EuroLeagueData` and `PlayByPlay`) actually correct?**
+- **Are the 8 inferred relationships involving `BoxScoreData` (e.g. with `int` and `DataFrame`) actually correct?**
   _`BoxScoreData` has 8 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `DataFrame`, `str`, `backtest.py — Round-by-round backtest of ML fantasy team predictions.  For each` to the rest of the system?**
-  _177 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _182 weakly-connected nodes found - possible documentation gaps or missing edges._

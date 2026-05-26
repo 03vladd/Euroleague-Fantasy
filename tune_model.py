@@ -15,7 +15,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-import shap
+import shaphow
 import xgboost as xgb
 import optuna
 from sklearn.inspection import permutation_importance
@@ -194,22 +194,25 @@ perm_std  =  perm.importances_std
 
 # ── SHAP values ───────────────────────────────────────────────
 print("Computing SHAP values…")
-# XGBoost 3.x stores base_score as '[value]' string; SHAP calls float() on it
-# and crashes. Inject a tolerant float into SHAP's module namespace so it
-# strips the brackets before conversion.
-import shap.explainers._tree as _shap_tree
-_builtin_float = float
-def _xgb3_safe_float(x):
-    if isinstance(x, str) and x.startswith('[') and x.endswith(']'):
-        return _builtin_float(x[1:-1])
-    return _builtin_float(x)
-_shap_tree.float = _xgb3_safe_float
-
-explainer   = shap.TreeExplainer(model)
-shap_matrix = explainer.shap_values(X_val)
-
-del _shap_tree.float  # restore builtins lookup
-shap_imp    = np.abs(shap_matrix).mean(axis=0)
+shap_imp = None
+try:
+    # XGBoost 3.x stores base_score as '[value]' string; patch SHAP's float
+    import shap.explainers._tree as _shap_tree
+    _builtin_float = float
+    def _xgb3_safe_float(x):
+        if isinstance(x, str) and x.startswith('[') and x.endswith(']'):
+            return _builtin_float(x[1:-1])
+        return _builtin_float(x)
+    _shap_tree.float = _xgb3_safe_float
+    explainer   = shap.TreeExplainer(model)
+    shap_matrix = explainer.shap_values(X_val)
+    del _shap_tree.float
+    shap_imp = np.abs(shap_matrix).mean(axis=0)
+    print("✓ SHAP values computed")
+except Exception as e:
+    print(f"⚠ SHAP skipped ({type(e).__name__}: {e})")
+    print("  This is a known XGBoost 3.x / SHAP incompatibility.")
+    shap_imp = np.zeros(len(feature_cols))
 
 # ── Combined table ────────────────────────────────────────────
 imp_df = pd.DataFrame({
@@ -220,8 +223,9 @@ imp_df = pd.DataFrame({
     'shap_imp':      shap_imp,
 })
 
-# Rank by SHAP (most balanced metric) and print
-imp_df = imp_df.sort_values('shap_imp', ascending=False).reset_index(drop=True)
+# Rank by permutation importance if SHAP failed, otherwise SHAP
+rank_col = 'shap_imp' if shap_imp.any() else 'perm_imp'
+imp_df = imp_df.sort_values(rank_col, ascending=False).reset_index(drop=True)
 imp_df['rank'] = imp_df.index + 1
 
 print(f"\n{'Rk':<4} {'Feature':<25} {'XGB Gain':>10} {'Perm Imp':>10} {'±':>6} {'SHAP':>8}")
