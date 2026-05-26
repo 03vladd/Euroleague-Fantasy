@@ -53,4 +53,4 @@
 
 - [x] 9.1 Run `python3 optimize_team_v2.py --round <next_round>` end-to-end; verify team + coach output, DNP risk table, and D2 captain
 - [x] 9.2 Confirm budget total (players + coach) ≤ 100 in the output
-- [ ] 9.3 Commit all changed source files; update CLAUDE.md pipeline section
+- [x] 9.3 Commit all changed source files; update CLAUDE.md pipeline section

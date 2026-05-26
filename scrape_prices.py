@@ -32,8 +32,8 @@ OUTPUT_CSV       = "euroleague_prices.csv"
 COACH_OUTPUT_CSV = "coach_prices.csv"
 
 # Keywords that trigger response inspection
-PLAYER_KEYWORDS = {"player", "market", "squad", "roster", "transfer", "credit", "price", "lineup"}
-COACH_KEYWORDS  = {"coach", "manager", "staff"}
+PLAYER_KEYWORDS = {"player", "market", "squad", "roster", "transfer", "credit", "price", "lineup", "quotation"}
+COACH_KEYWORDS  = {"coach", "manager", "staff", "trainer"}
 
 
 def looks_like_player_list(data) -> list[dict]:
@@ -56,11 +56,17 @@ def looks_like_player_list(data) -> list[dict]:
             price = (
                 node.get("price") or node.get("value") or
                 node.get("credits") or node.get("credit") or
-                node.get("marketValue") or node.get("cost")
+                node.get("marketValue") or node.get("cost") or
+                node.get("quotation") or node.get("currentValue")
             )
             if name and price:
                 try:
-                    candidates.append({"player.name": str(name).upper(), "price": float(price)})
+                    name_str = str(name).upper()
+                    # Skip coach-scoring breakdown entries (e.g. "WIN_1-10", "LOSS_20")
+                    if "_" in name_str and any(x in name_str for x in ("WIN", "LOSS", "OT")):
+                        pass
+                    else:
+                        candidates.append({"player.name": name_str, "price": float(price)})
                 except (ValueError, TypeError):
                     pass
             for v in node.values():
@@ -100,7 +106,8 @@ def looks_like_coach_list(data) -> list[dict]:
             )
             price = (
                 node.get("price") or node.get("value") or
-                node.get("credits") or node.get("marketValue") or node.get("cost")
+                node.get("credits") or node.get("marketValue") or
+                node.get("cost") or node.get("quotation") or node.get("currentValue")
             )
             if is_coach and team and price:
                 try:
@@ -146,6 +153,7 @@ def scrape() -> tuple[list[dict], list[dict]]:
             ct = response.headers.get("content-type", "")
             if "json" not in ct:
                 return
+
             url_lower = url.lower()
             is_player_url = any(kw in url_lower for kw in PLAYER_KEYWORDS)
             is_coach_url  = any(kw in url_lower for kw in COACH_KEYWORDS)
