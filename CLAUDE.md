@@ -38,8 +38,12 @@ python3 backtest.py          # optional, uses existing features file
 ## Price scraping
 
 Run `python3 scrape_prices.py` — requires WSLg display (Windows 11 with WSL2).
-Browser opens headed; log in → navigate to Transfer/Market → browse all positions → close window.
+Browser opens headed; log in → navigate to Transfer/Market → browse all positions → navigate to Coach tab → browse all coaches → close window.
+Outputs: `euroleague_prices.csv` (players) + `coach_prices.csv` (coaches, needed for coach co-optimisation).
+Both files are gitignored. Run before `optimize_team_v2.py` each round.
 Credentials stored in `.fantasy_creds.json` (gitignored).
+
+Note: scraper adds a 2s sleep after page load and 1s after cookie dismiss to let the Flutter app initialise and avoid triggering rate limits.
 
 ## Schedule / transfer window
 

@@ -116,6 +116,16 @@ def calculate_rolling_stats(group, windows=[3, 5, 10]):
     group['plusminus_last_3'] = group['Plusminus'].rolling(3, min_periods=1).mean()
     group['plusminus_last_5'] = group['Plusminus'].rolling(5, min_periods=1).mean()
 
+    # DNP risk: fraction of recent games with 0 minutes
+    group['dnp'] = (group['Minutes'] == 0).astype(int)
+    group['dnp_rate_last5']  = group['dnp'].rolling(5,  min_periods=1).mean()
+    group['dnp_rate_last10'] = group['dnp'].rolling(10, min_periods=1).mean()
+
+    # Home advantage: cumulative home-FP mean minus away-FP mean (no leakage)
+    home_mean = group['fantasy_points'].where(group['Home'] == 1).expanding().mean()
+    away_mean = group['fantasy_points'].where(group['Home'] == 0).expanding().mean()
+    group['home_advantage'] = (home_mean - away_mean).fillna(0)
+
     return group
 
 # Apply rolling stats per player
@@ -229,6 +239,7 @@ prediction_features = latest_by_player[[
     'team_won', 'Home',
     'points_share',
     'games_played',
+    'dnp_rate_last5', 'dnp_rate_last10', 'home_advantage',
     'Minutes', 'Points', 'TotalRebounds', 'Assistances', 'Valuation'  # API returns 'Assistances' not 'Assists'
 ]].copy()
 

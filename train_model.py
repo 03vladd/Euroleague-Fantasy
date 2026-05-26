@@ -76,6 +76,9 @@ feature_cols = [
     'opp_defensive_rating',
     'team_won', 'Home',
 
+    # Risk & home tendency
+    'dnp_rate_last5', 'dnp_rate_last10', 'home_advantage',
+
     # Experience
     'games_played',
 
@@ -182,12 +185,14 @@ latest['predicted_fp'] = final_model.predict(X_pred)
 latest['predicted_value'] = latest['predicted_fp'] / latest['price']
 
 # Save predictions
+extra_cols = [c for c in ['dnp_rate_last5', 'dnp_rate_last10', 'home_advantage']
+              if c in latest.columns]
 latest_relevant = latest[[
     'Player', 'Team', 'price',
     'fantasy_points_mean', 'fp_last_3', 'fp_last_5',
     'predicted_fp', 'predicted_value',
-    'games_played_max'
-]].copy()
+    'games_played_max',
+] + extra_cols].copy()
 
 latest_relevant.to_csv('data/processed/next_round_predictions.csv', index=False)
 

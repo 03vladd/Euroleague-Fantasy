@@ -37,20 +37,9 @@ POSITION_REQ  = {'G': 4, 'F': 4, 'C': 2}
 POSITION_MAP  = {'Guard': 'G', 'Forward': 'F', 'Center': 'C'}
 SEASON        = 2025
 
-FEATURE_COLS = [
-    'fp_last_3', 'fp_last_5', 'fp_last_10',
-    'fp_std_3', 'fp_std_5', 'fp_std_10',
-    'Minutes', 'minutes_last_3', 'minutes_last_5', 'minutes_last_10',
-    'minutes_rank', 'usage_trend',
-    'starter_rate_3', 'starter_rate_5',
-    'plusminus_last_3', 'plusminus_last_5',
-    'form_trend', 'hot_streak',
-    'points_share',
-    'opp_defensive_rating',
-    'team_won', 'Home',
-    'games_played',
-    'Points', 'TotalRebounds', 'Assistances', 'Valuation',
-]
+import pickle
+with open('models/feature_columns.pkl', 'rb') as _f:
+    FEATURE_COLS = pickle.load(_f)
 
 # ── Load data ─────────────────────────────────────────────────────────────────
 print("=" * 65)

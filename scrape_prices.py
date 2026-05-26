@@ -15,6 +15,7 @@ Run:
 
 import json
 import sys
+import time
 from pathlib import Path
 import pandas as pd
 
@@ -26,11 +27,13 @@ except ImportError:
     print("  playwright install chromium")
     sys.exit(1)
 
-FANTASY_URL = "https://euroleaguefantasy.euroleaguebasketball.net/24"
-OUTPUT_CSV = "euroleague_prices.csv"
+FANTASY_URL      = "https://euroleaguefantasy.euroleaguebasketball.net/24"
+OUTPUT_CSV       = "euroleague_prices.csv"
+COACH_OUTPUT_CSV = "coach_prices.csv"
 
-# Keywords that suggest a response contains player/market data
+# Keywords that trigger response inspection
 PLAYER_KEYWORDS = {"player", "market", "squad", "roster", "transfer", "credit", "price", "lineup"}
+COACH_KEYWORDS  = {"coach", "manager", "staff"}
 
 
 def looks_like_player_list(data) -> list[dict]:
@@ -68,8 +71,57 @@ def looks_like_player_list(data) -> list[dict]:
     return candidates
 
 
-def scrape() -> list[dict]:
+def looks_like_coach_list(data) -> list[dict]:
+    """
+    Walk a JSON blob and return coach entries: {team, coach_name, price}.
+    Handles multiple possible API field names for the team code and coach name.
+    """
+    candidates = []
+
+    def walk(node):
+        if isinstance(node, list):
+            for item in node:
+                walk(item)
+        elif isinstance(node, dict):
+            node_str = str(node)[:300].lower()
+            is_coach = (
+                node.get("isCoach") or
+                str(node.get("type", "")).lower() in ("coach", "head_coach", "headcoach") or
+                "coach" in str(node.get("role", "")).lower() or
+                "coach" in str(node.get("position", "")).lower()
+            )
+            team = (
+                node.get("teamCode") or node.get("teamAbbreviation") or
+                node.get("team") or node.get("code") or node.get("teamId")
+            )
+            coach_name = (
+                node.get("coachName") or node.get("coach_name") or
+                node.get("name") or node.get("fullName") or node.get("displayName")
+            )
+            price = (
+                node.get("price") or node.get("value") or
+                node.get("credits") or node.get("marketValue") or node.get("cost")
+            )
+            if is_coach and team and price:
+                try:
+                    candidates.append({
+                        "team":       str(team).upper()[:6],
+                        "coach_name": str(coach_name or team).upper(),
+                        "price":      float(price),
+                    })
+                except (ValueError, TypeError):
+                    pass
+            for v in node.values():
+                if isinstance(v, (dict, list)):
+                    walk(v)
+
+    walk(data)
+    return candidates
+
+
+def scrape() -> tuple[list[dict], list[dict]]:
     all_players: list[dict] = []
+    all_coaches: list[dict] = []
     seen_urls: set[str] = set()
 
     # Persistent user data dir so login cookies survive between runs
@@ -94,9 +146,10 @@ def scrape() -> list[dict]:
             ct = response.headers.get("content-type", "")
             if "json" not in ct:
                 return
-            # Only process URLs that look player/market related
             url_lower = url.lower()
-            if not any(kw in url_lower for kw in PLAYER_KEYWORDS):
+            is_player_url = any(kw in url_lower for kw in PLAYER_KEYWORDS)
+            is_coach_url  = any(kw in url_lower for kw in COACH_KEYWORDS)
+            if not (is_player_url or is_coach_url):
                 return
 
             try:
@@ -104,10 +157,17 @@ def scrape() -> list[dict]:
             except Exception:
                 return
 
-            found = looks_like_player_list(data)
-            if found:
-                all_players.extend(found)
-                print(f"  Captured {len(found)} players from:\n    {url}")
+            if is_coach_url or "coach" in url_lower:
+                coaches = looks_like_coach_list(data)
+                if coaches:
+                    all_coaches.extend(coaches)
+                    print(f"  Captured {len(coaches)} coaches from:\n    {url}")
+
+            if is_player_url:
+                found = looks_like_player_list(data)
+                if found:
+                    all_players.extend(found)
+                    print(f"  Captured {len(found)} players from:\n    {url}")
 
         page.on("response", on_response)
 
@@ -117,10 +177,13 @@ def scrape() -> list[dict]:
         except PWTimeout:
             pass  # Flutter app may never reach networkidle
 
+        time.sleep(2)  # let Flutter app initialise before intercepting
+
         # Auto-dismiss cookie consent if present
         try:
             page.click("text=Accept All Cookies", timeout=5_000)
             print("✓ Dismissed cookie dialog")
+            time.sleep(1)  # brief pause after cookie dismiss
         except PWTimeout:
             pass
 
@@ -129,9 +192,10 @@ def scrape() -> list[dict]:
         print("=" * 60)
         print("1. Log in to your account if prompted")
         print("2. Navigate to the TRANSFER / PLAYER MARKET section")
-        print("3. Browse through every position tab (Guards, Forwards, Centers)")
+        print("3. Browse every position tab (Guards, Forwards, Centers)")
         print("   — scroll down each list so all players load")
-        print("4. Close the browser window when done")
+        print("4. Navigate to the COACH market tab and scroll through all coaches")
+        print("5. Close the browser window when done")
         print("=" * 60)
 
         # Wait for browser window to be closed by the user
@@ -148,7 +212,7 @@ def scrape() -> list[dict]:
 
         context.close()
 
-    return all_players
+    return all_players, all_coaches
 
 
 def save(players: list[dict]) -> None:
@@ -173,10 +237,32 @@ def save(players: list[dict]) -> None:
     print(df.head(10).to_string(index=False))
 
 
+def save_coaches(coaches: list[dict]) -> None:
+    if not coaches:
+        print("\nNo coach prices captured.")
+        print("Tips:")
+        print("  • Make sure you navigated to the Coach market tab")
+        print("  • Scroll through the full coach list so all requests fire")
+        print("  • If the coach tab uses a different URL pattern, check the")
+        print("    captured URLs above and add the keyword to COACH_KEYWORDS")
+        return
+
+    df = (
+        pd.DataFrame(coaches)
+        .drop_duplicates("team")
+        .sort_values("price", ascending=False)
+        .reset_index(drop=True)
+    )
+    df.to_csv(COACH_OUTPUT_CSV, index=False)
+    print(f"\n✓ Saved {len(df)} coaches to {COACH_OUTPUT_CSV}")
+    print(df.to_string(index=False))
+
+
 if __name__ == "__main__":
     print("=" * 60)
     print("EUROLEAGUE FANTASY PRICE SCRAPER")
     print("=" * 60)
 
-    players = scrape()
+    players, coaches = scrape()
     save(players)
+    save_coaches(coaches)
