@@ -1,7 +1,7 @@
 """
 backtest.py — Round-by-round backtest of ML fantasy team predictions.
 
-For each round R from START_ROUND to the last round:
+Fsor each round R from START_ROUND to the last round:
   1. Train XGBoost on all player-game rows from rounds 1..R-1
   2. For each player, take their most recent features from rounds <R to predict round R
   3. Optimize a team via LP (4G/4F/2C, budget 100, max 3/team, 1 captain 2×)
@@ -35,6 +35,7 @@ warnings.filterwarnings("ignore")
 
 # ── Config ────────────────────────────────────────────────────────────────────
 START_ROUND = 6      # need enough history for rolling features to be meaningful
+END_ROUND   = 38     # last regular-season round
 BUDGET      = 100
 ROSTER      = 10
 MAX_PER_TEAM = 6
@@ -98,10 +99,16 @@ else:
     }
     print("Using default params (run tune_model.py to improve)")
 
-# Load prices
-prices = pd.read_csv('euroleague_prices.csv').rename(columns={'player.name': 'Player'})
+# Load prices — prefer the processed file (built by prepare_data.py) which has
+# full-season coverage; fall back to euroleague_prices.csv if only that exists
+_price_src = 'data/processed/all_players_with_prices.csv'
+if not Path(_price_src).exists():
+    _price_src = 'euroleague_prices.csv'
+prices = (pd.read_csv(_price_src)[['player.name', 'price']]
+          .rename(columns={'player.name': 'Player'})
+          .drop_duplicates('Player'))
 prices['Player'] = prices['Player'].str.strip()
-print(f"Price data: {len(prices)} players")
+print(f"Price data: {len(prices)} players  (from {_price_src})")
 
 # Load positions
 try:
@@ -127,7 +134,7 @@ for col in FEATURE_COLS:
 df[FEATURE_COLS] = df[FEATURE_COLS].fillna(0.0)
 
 rounds = sorted(df['Round'].unique())
-test_rounds = [r for r in rounds if r >= START_ROUND]
+test_rounds = [r for r in rounds if START_ROUND <= r <= END_ROUND]
 print(f"Backtesting {len(test_rounds)} rounds: {test_rounds[0]}–{test_rounds[-1]}\n")
 
 
