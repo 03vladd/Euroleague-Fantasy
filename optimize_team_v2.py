@@ -48,7 +48,7 @@ print(f"Available players: {len(df)}")
 # ── Config ────────────────────────────────────────────────────
 BUDGET     = 100
 ROSTER     = 10
-MAX_PER_TEAM   = 3
+MAX_PER_TEAM   = 6
 REQ = {'G': 4, 'F': 4, 'C': 2}
 
 has_positions = all(

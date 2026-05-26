@@ -23,13 +23,21 @@ import xgboost as xgb
 from pathlib import Path
 from pulp import LpProblem, LpMaximize, LpVariable, lpSum, PULP_CBC_CMD
 
+
+# ── Coach scoring formula ─────────────────────────────────────────────────────
+def _coach_fp(margin: int, won: bool) -> int:
+    if won:
+        return 10 if margin <= 10 else (20 if margin <= 20 else 25)
+    else:
+        return -5 if margin <= 10 else (-10 if margin <= 20 else -20)
+
 warnings.filterwarnings("ignore")
 
 # ── Config ────────────────────────────────────────────────────────────────────
 START_ROUND = 6      # need enough history for rolling features to be meaningful
 BUDGET      = 100
 ROSTER      = 10
-MAX_PER_TEAM = 3
+MAX_PER_TEAM = 6
 POSITION_REQ = {'G': 4, 'F': 4, 'C': 2}
 POSITION_MAP = {'Guard': 'G', 'Forward': 'F', 'Center': 'C'}
 
@@ -52,6 +60,35 @@ FEATURE_COLS = [
 print("=" * 65)
 print("EUROLEAGUE FANTASY BACKTEST")
 print("=" * 65)
+
+# Pre-compute coach FP per team per round from boxscore team totals
+_raw = pd.read_csv('data/raw/all_player_game_stats_2025.csv')
+_el  = _raw[(_raw['Competition'] == 'Euroleague') & (_raw['Player'] == 'Total')].copy()
+_home = _el[_el['Home'] == 1][['Round', 'Gamecode', 'Team', 'Points']].rename(
+    columns={'Team': 'home_team', 'Points': 'home_pts'})
+_away = _el[_el['Home'] == 0][['Round', 'Gamecode', 'Team', 'Points']].rename(
+    columns={'Team': 'away_team', 'Points': 'away_pts'})
+_games = _home.merge(_away, on=['Round', 'Gamecode'])
+_games['margin']   = (_games['home_pts'] - _games['away_pts']).abs()
+_games['home_win'] = _games['home_pts'] > _games['away_pts']
+_coach_home = _games[['Round', 'home_team', 'home_win', 'margin']].copy()
+_coach_home['team'] = _coach_home['home_team']
+_coach_home['won']  = _coach_home['home_win']
+_coach_away = _games[['Round', 'away_team', 'home_win', 'margin']].copy()
+_coach_away['team'] = _coach_away['away_team']
+_coach_away['won']  = ~_coach_away['home_win']
+COACH_FP = pd.concat([
+    _coach_home[['Round', 'team', 'won', 'margin']],
+    _coach_away[['Round', 'team', 'won', 'margin']],
+], ignore_index=True)
+COACH_FP['coach_fp'] = COACH_FP.apply(
+    lambda r: _coach_fp(int(r['margin']), bool(r['won'])), axis=1)
+# Dict: round → {team: coach_fp}
+COACH_FP_DICT: dict[int, dict[str, int]] = {}
+for rnd, grp in COACH_FP.groupby('Round'):
+    COACH_FP_DICT[int(rnd)] = dict(zip(grp['team'], grp['coach_fp']))
+
+print(f"Coach data: {len(COACH_FP_DICT)} rounds loaded")
 
 df = pd.read_csv('data/processed/player_games_with_features.csv')
 df = df[df['Minutes'] >= 5].copy()
@@ -268,6 +305,19 @@ for r in test_rounds:
     pred_players   = set(pred_team['Player'])
     overlap = len(pred_players & oracle_players)
 
+    # ── 9. Coach scoring ─────────────────────────────────────────────────────
+    round_coach = COACH_FP_DICT.get(r, {})
+    # Oracle coach: best team this round
+    oracle_coach_fp = max(round_coach.values()) if round_coach else 0
+    # Naive coach: pick team with best cumulative coach FP so far
+    prior_coach = COACH_FP[COACH_FP['Round'] < r].groupby('team')['coach_fp'].sum()
+    naive_coach_team = prior_coach.idxmax() if not prior_coach.empty else None
+    naive_coach_fp = round_coach.get(naive_coach_team, 0) if naive_coach_team else 0
+    # ML-team coach: pick the team with most players in our predicted team
+    team_counts = pred_scored['Team'].value_counts()
+    ml_coach_team = team_counts.index[0] if not team_counts.empty else None
+    ml_coach_fp = round_coach.get(ml_coach_team, 0) if ml_coach_team else 0
+
     results.append({
         'round':                   r,
         'predicted_team_fp':       round(pred_total, 1),
@@ -277,12 +327,18 @@ for r in test_rounds:
         'oracle_overlap':          overlap,
         'captain':                 cap_player,
         'captain_actual_fp':       round(cap_actual, 1),
+        'oracle_coach_fp':         oracle_coach_fp,
+        'naive_coach_fp':          naive_coach_fp,
+        'ml_team_coach_fp':        ml_coach_fp,
+        'oracle_coach_team':       max(round_coach, key=round_coach.get) if round_coach else None,
+        'naive_coach_team':        naive_coach_team,
     })
 
     pct = (pred_total / oracle_total * 100) if oracle_total and not np.isnan(oracle_total) else 0
     print(f"Round {r:>2}  ML={pred_total:>6.1f}  Naive={naive_total:>6.1f}  "
           f"Oracle={oracle_total:>6.1f}  ({pct:.0f}%)  "
-          f"Overlap={overlap}/10  Captain: {results[-1]['captain']}")
+          f"Coach: oracle={oracle_coach_fp:+d} naive={naive_coach_fp:+d}  "
+          f"Captain: {results[-1]['captain']}")
 
 
 # ── Summary ───────────────────────────────────────────────────────────────────
@@ -313,6 +369,26 @@ print(f"ML vs Oracle:  {ml_mean - oracle_mean:+.1f} pts/round  "
 
 print(f"\nAvg oracle overlap (players in common): "
       f"{valid['oracle_overlap'].mean():.1f} / 10")
+
+# ── Coach scoring summary ─────────────────────────────────────────────────────
+oracle_coach_mean = valid['oracle_coach_fp'].mean()
+naive_coach_mean  = valid['naive_coach_fp'].mean()
+ml_coach_mean     = valid['ml_team_coach_fp'].mean()
+
+print(f"\n{'─'*45}")
+print(f"COACH SCORING (separate from player FP):")
+print(f"{'─'*45}")
+print(f"\n{'Metric':<35} {'Avg FP/round':>12}")
+print("-" * 50)
+print(f"{'Oracle coach (best pick each round)':<35} {oracle_coach_mean:>+12.1f}")
+print(f"{'Naive coach (best cumul. record)':<35} {naive_coach_mean:>+12.1f}")
+print(f"{'ML-team coach (most players team)':<35} {ml_coach_mean:>+12.1f}")
+print(f"\nML players + oracle coach:  {ml_mean + oracle_coach_mean:.1f} pts/round")
+print(f"ML players + naive coach:   {ml_mean + naive_coach_mean:.1f} pts/round")
+print(f"\nOracle coach most common picks:")
+top_oracle_coaches = valid['oracle_coach_team'].value_counts().head(5)
+for team, cnt in top_oracle_coaches.items():
+    print(f"  {team}: {cnt} rounds")
 
 print(f"\nBest rounds (ML):")
 print(valid.nlargest(5, 'predicted_team_fp')

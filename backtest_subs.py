@@ -31,7 +31,7 @@ warnings.filterwarnings("ignore")
 START_ROUND   = 6
 BUDGET        = 100
 ROSTER        = 10
-MAX_PER_TEAM  = 3
+MAX_PER_TEAM  = 6
 STARTERS      = 6
 POSITION_REQ  = {'G': 4, 'F': 4, 'C': 2}
 POSITION_MAP  = {'Guard': 'G', 'Forward': 'F', 'Center': 'C'}
@@ -242,11 +242,12 @@ for r in test_rds:
         d1_bench       = set(t_d1.index) - d1_starters
         d2_starter_slots = STARTERS - len(d1_starters)
 
-        # ── Oracle sub: know actual Day-2 FP ─────────────────────────────────
-        d2_stars_oracle, d2_cap_oracle = optimal_assignment(
-            t, 'actual_fp', d1_starters, d1_bench, d2_starter_slots
-        )
-        score_oracle_sub = score_with_roles(t, 'actual_fp', d2_stars_oracle, d2_cap_oracle)
+        # ── Oracle sub: unconstrained retroactive reassignment ────────────────
+        # Any player (D1 or D2, starter or bench) can be reassigned.
+        # Pick the 6 highest actual-FP players as starters; best one is captain.
+        top6_oracle   = set(t.nlargest(STARTERS, 'actual_fp').index)
+        d2_cap_oracle = t.loc[list(top6_oracle), 'actual_fp'].idxmax()
+        score_oracle_sub = score_with_roles(t, 'actual_fp', top6_oracle, d2_cap_oracle)
 
         # ── DNP-aware sub: only move 0-minute players to bench ───────────────
         # Mark Day-2 DNPs (0 minutes AND not in actual game data at all)
@@ -305,7 +306,7 @@ print(f"\nRounds evaluated: {len(res)}  "
 print(f"\n{'Metric':<35} {'Avg FP/round':>12}")
 print("-" * 50)
 print(f"{'Original ML lineup':<35} {res['score_orig'].mean():>12.1f}")
-print(f"{'Oracle sub (perfect Day-2 hindsight)':<35} {res['score_oracle_sub'].mean():>12.1f}")
+print(f"{'Oracle sub (full retroactive reassign)':<35} {res['score_oracle_sub'].mean():>12.1f}")
 print(f"{'DNP-aware sub (injury news only)':<35} {res['score_dnp_sub'].mean():>12.1f}")
 
 print(f"\nOracle sub gain (all rounds):       +{res['oracle_gain'].mean():.1f} pts/round")
