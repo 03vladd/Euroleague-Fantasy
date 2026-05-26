@@ -126,16 +126,23 @@ def optimise_team(pool: pd.DataFrame, score_col: str, label: str) -> pd.DataFram
         for p, req in POSITION_REQ.items()
     )
 
+    STARTERS = 6  # 6 players at 100%, 4 bench at 50%
+
     def solve(use_positions: bool):
         prob = LpProblem(f"{label}_LP", LpMaximize)
         pv = {i: LpVariable(f"p_{i}", cat='Binary') for i in pool.index}
+        sv = {i: LpVariable(f"s_{i}", cat='Binary') for i in pool.index}
         cv = {i: LpVariable(f"c_{i}", cat='Binary') for i in pool.index}
 
+        sc = pool[score_col]
         prob += lpSum(
-            pv[i] * pool.loc[i, score_col] + cv[i] * pool.loc[i, score_col]
+            sc[i] * 0.5 * pv[i] +  # bench baseline
+            sc[i] * 0.5 * sv[i] +  # starter bonus
+            sc[i] * cv[i]           # captain bonus
             for i in pool.index
         )
         prob += lpSum(pv[i] for i in pool.index) == ROSTER
+        prob += lpSum(sv[i] for i in pool.index) == STARTERS
         prob += lpSum(pv[i] * pool.loc[i, 'price'] for i in pool.index) <= BUDGET
         for team, grp in pool.groupby('Team'):
             prob += lpSum(pv[i] for i in grp.index) <= per_team_cap
@@ -144,15 +151,18 @@ def optimise_team(pool: pd.DataFrame, score_col: str, label: str) -> pd.DataFram
                 prob += lpSum(pv[i] for i in pool[pool['Position'] == pos].index) == req
         prob += lpSum(cv[i] for i in pool.index) == 1
         for i in pool.index:
-            prob += cv[i] <= pv[i]
+            prob += sv[i] <= pv[i]
+            prob += cv[i] <= sv[i]  # captain must be a starter
 
         prob.solve(PULP_CBC_CMD(msg=0))
         if prob.status != 1:
             return None
         sel = [i for i in pool.index if pv[i].varValue == 1]
         cap = next((i for i in pool.index if cv[i].varValue == 1), None)
+        starters = {i for i in pool.index if sv[i].varValue == 1}
         out = pool.loc[sel].copy()
         out['is_captain'] = out.index == cap
+        out['is_starter'] = out.index.map(lambda i: i in starters)
         return out
 
     result = solve(has_pos)
@@ -199,28 +209,36 @@ for r in test_rounds:
                 .rename(columns={'fantasy_points': 'actual_fp'}))
 
     # Score predicted team on actual FP
+    def score_team(team_df, actual_fp_col, pred_col):
+        """Score a team using 6-starter / 4-bench / 1-captain rules."""
+        t = team_df.copy()
+        t['actual_fp'] = t['actual_fp'] if 'actual_fp' in t.columns else 0.0
+        # Assign starter slots to top-6 by predicted score (optimal ordering)
+        top6 = t.nlargest(6, pred_col).index
+        t['is_starter'] = t.index.map(lambda i: i in set(top6))
+        cap_idx = t.loc[top6, pred_col].idxmax()
+        t['is_captain'] = t.index == cap_idx
+        t['effective_fp'] = np.where(
+            t['is_captain'], t[actual_fp_col] * 2,
+            np.where(t['is_starter'], t[actual_fp_col], t[actual_fp_col] * 0.5)
+        )
+        return t['effective_fp'].sum()
+
     pred_scored = pred_team.merge(actual_r[['Player', 'actual_fp']], on='Player', how='left')
     pred_scored['actual_fp'] = pred_scored['actual_fp'].fillna(0.0)
-    # Captain = player we predicted to score highest on this team
-    cap_idx = pred_scored['predicted_fp'].idxmax()
-    pred_scored['is_captain'] = pred_scored.index == cap_idx
-    pred_scored['effective_fp'] = np.where(
-        pred_scored['is_captain'], pred_scored['actual_fp'] * 2, pred_scored['actual_fp']
-    )
-    pred_total = pred_scored['effective_fp'].sum()
+    pred_total = score_team(pred_scored, 'actual_fp', 'predicted_fp')
+    # Identify captain for reporting (top predicted among starters)
+    top6_pred = pred_scored.nlargest(6, 'predicted_fp')
+    cap_idx = top6_pred['predicted_fp'].idxmax()
+    cap_player = pred_scored.loc[cap_idx, 'Player']
+    cap_actual = pred_scored.loc[cap_idx, 'actual_fp']
 
     # ── 5. Naive baseline: top fp_last_3 team ────────────────────────────────
     naive_team = optimise_team(latest, 'fp_last_3', f'naive_r{r}')
     if naive_team is not None:
         naive_scored = naive_team.merge(actual_r[['Player', 'actual_fp']], on='Player', how='left')
         naive_scored['actual_fp'] = naive_scored['actual_fp'].fillna(0.0)
-        naive_cap_idx = naive_scored['fp_last_3'].idxmax()
-        naive_scored['effective_fp'] = np.where(
-            naive_scored.index == naive_cap_idx,
-            naive_scored['actual_fp'] * 2,
-            naive_scored['actual_fp']
-        )
-        naive_total = naive_scored['effective_fp'].sum()
+        naive_total = score_team(naive_scored, 'actual_fp', 'fp_last_3')
     else:
         naive_total = np.nan
 
@@ -232,20 +250,18 @@ for r in test_rounds:
 
     oracle_team = optimise_team(oracle_pool, 'actual_fp', f'oracle_r{r}')
     if oracle_team is not None:
-        oracle_scored = oracle_team.copy()
-        oracle_cap_idx = oracle_scored['actual_fp'].idxmax()
-        oracle_scored['effective_fp'] = np.where(
-            oracle_scored.index == oracle_cap_idx,
-            oracle_scored['actual_fp'] * 2,
-            oracle_scored['actual_fp']
-        )
-        oracle_total = oracle_scored['effective_fp'].sum()
+        oracle_total = score_team(oracle_team, 'actual_fp', 'actual_fp')
     else:
         oracle_total = np.nan
 
     # ── 7. Oracle unconstrained: top-10 by actual FP ─────────────────────────
     top10_actual = actual_r.nlargest(10, 'actual_fp')
-    oracle_unconstrained = top10_actual['actual_fp'].sum() + top10_actual['actual_fp'].max()
+    top6_unc = top10_actual.nlargest(6, 'actual_fp')
+    oracle_unconstrained = (
+        top6_unc['actual_fp'].max() * 2 +          # captain
+        top6_unc['actual_fp'].sum() - top6_unc['actual_fp'].max() +  # other 5 starters
+        top10_actual.nsmallest(4, 'actual_fp')['actual_fp'].sum() * 0.5  # bench
+    )
 
     # ── 8. How many of our predicted team appeared in oracle team? ───────────
     oracle_players = set(oracle_team['Player']) if oracle_team is not None else set()
@@ -259,8 +275,8 @@ for r in test_rounds:
         'oracle_constrained_fp':   round(oracle_total, 1) if not np.isnan(oracle_total) else None,
         'oracle_unconstrained_fp': round(oracle_unconstrained, 1),
         'oracle_overlap':          overlap,
-        'captain':                 pred_scored.loc[cap_idx, 'Player'] if cap_idx is not None else '',
-        'captain_actual_fp':       round(pred_scored.loc[cap_idx, 'actual_fp'], 1) if cap_idx is not None else 0,
+        'captain':                 cap_player,
+        'captain_actual_fp':       round(cap_actual, 1),
     })
 
     pct = (pred_total / oracle_total * 100) if oracle_total and not np.isnan(oracle_total) else 0

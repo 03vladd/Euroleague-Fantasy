@@ -40,15 +40,6 @@
       "norm_label": "str"
     },
     {
-      "label": "score_team()",
-      "file_type": "code",
-      "source_file": "backtest.py",
-      "source_location": "L212",
-      "id": "euroleague_backtest_score_team",
-      "community": 32,
-      "norm_label": "score_team()"
-    },
-    {
       "label": "backtest.py \u2014 Round-by-round backtest of ML fantasy team predictions.  For each",
       "file_type": "rationale",
       "source_file": "backtest.py",
@@ -65,15 +56,6 @@
       "id": "euroleague_backtest_rationale_110",
       "community": 32,
       "norm_label": "pick the optimal 10-player team + captain from `pool`.     `pool` must have colu"
-    },
-    {
-      "label": "Score a team using 6-starter / 4-bench / 1-captain rules.",
-      "file_type": "rationale",
-      "source_file": "backtest.py",
-      "source_location": "L213",
-      "id": "euroleague_backtest_rationale_213",
-      "community": 32,
-      "norm_label": "score a team using 6-starter / 4-bench / 1-captain rules."
     },
     {
       "label": "build_features.py",
@@ -254,15 +236,6 @@
       "id": "optimize_team_v2_py",
       "community": 15,
       "norm_label": "optimize_team_v2.py"
-    },
-    {
-      "label": "build_prob()",
-      "file_type": "code",
-      "source_file": "optimize_team_v2.py",
-      "source_location": "L63",
-      "id": "euroleague_optimize_team_v2_build_prob",
-      "community": 15,
-      "norm_label": "build_prob()"
     },
     {
       "label": "Optimize fantasy team using ML predictions. Enforces 4G/4F/2C position constrain",
@@ -450,7 +423,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/boxscore_data.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_boxscore_data_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "boxscore_data.py"
     },
     {
@@ -630,7 +603,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/boxscore_data.py",
       "source_location": "L236",
       "id": "euroleague_api_boxscore_data_rationale_236",
-      "community": 0,
+      "community": 3,
       "norm_label": "a function that gets the play-by-play data of *all* games in a range of"
     },
     {
@@ -666,7 +639,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/EuroLeagueData.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_euroleaguedata_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "euroleaguedata.py"
     },
     {
@@ -846,7 +819,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/game_metadata.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_game_metadata_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "game_metadata.py"
     },
     {
@@ -963,7 +936,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/game_stats.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_game_stats_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "game_stats.py"
     },
     {
@@ -1251,7 +1224,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/player_stats.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_player_stats_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "player_stats.py"
     },
     {
@@ -1449,7 +1422,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/play_by_play_data.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_play_by_play_data_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "play_by_play_data.py"
     },
     {
@@ -1638,7 +1611,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_shot_data_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "shot_data.py"
     },
     {
@@ -1647,7 +1620,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L7",
       "id": "euroleague_api_main_src_euroleague_api_shot_data_py_euroleague_api_shot_data_shotdata",
-      "community": 56,
+      "community": 0,
       "norm_label": "shotdata"
     },
     {
@@ -1656,7 +1629,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L21",
       "id": "euroleague_api_shot_data_shotdata_get_game_shot_data",
-      "community": 56,
+      "community": 0,
       "norm_label": ".get_game_shot_data()"
     },
     {
@@ -1665,7 +1638,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L21",
       "id": "euroleague_api_main_src_euroleague_api_shot_data_py_int",
-      "community": 56,
+      "community": 0,
       "norm_label": "int"
     },
     {
@@ -1674,7 +1647,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L21",
       "id": "euroleague_api_main_src_euroleague_api_shot_data_py_dataframe",
-      "community": 56,
+      "community": 0,
       "norm_label": "dataframe"
     },
     {
@@ -1683,7 +1656,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L61",
       "id": "euroleague_api_shot_data_shotdata_get_game_shot_data_round",
-      "community": 56,
+      "community": 0,
       "norm_label": ".get_game_shot_data_round()"
     },
     {
@@ -1692,7 +1665,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L80",
       "id": "euroleague_api_shot_data_shotdata_get_game_shot_data_single_season",
-      "community": 56,
+      "community": 0,
       "norm_label": ".get_game_shot_data_single_season()"
     },
     {
@@ -1701,7 +1674,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L97",
       "id": "euroleague_api_shot_data_shotdata_get_game_shot_data_multiple_seasons",
-      "community": 56,
+      "community": 0,
       "norm_label": ".get_game_shot_data_multiple_seasons()"
     },
     {
@@ -1710,7 +1683,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L8",
       "id": "euroleague_api_shot_data_rationale_8",
-      "community": 56,
+      "community": 0,
       "norm_label": "a class for getting shot data.      args:         competition (str, optional): t"
     },
     {
@@ -1719,7 +1692,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L22",
       "id": "euroleague_api_shot_data_rationale_22",
-      "community": 56,
+      "community": 0,
       "norm_label": "a function that gets the shot data of a particular game.          args:"
     },
     {
@@ -1728,7 +1701,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L64",
       "id": "euroleague_api_shot_data_rationale_64",
-      "community": 56,
+      "community": 0,
       "norm_label": "a function that gets the shot data of *all* games in a single round          arg"
     },
     {
@@ -1737,7 +1710,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L81",
       "id": "euroleague_api_shot_data_rationale_81",
-      "community": 56,
+      "community": 0,
       "norm_label": "a function that gets the shot data of *all* games in a single season          ar"
     },
     {
@@ -1746,7 +1719,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L100",
       "id": "euroleague_api_shot_data_rationale_100",
-      "community": 56,
+      "community": 0,
       "norm_label": "a function that gets the shot data of *all* games in a range of seasons"
     },
     {
@@ -1755,7 +1728,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_standings_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "standings.py"
     },
     {
@@ -1764,7 +1737,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L6",
       "id": "euroleague_api_main_src_euroleague_api_standings_py_euroleague_api_standings_standings",
-      "community": 5,
+      "community": 0,
       "norm_label": "standings"
     },
     {
@@ -1773,7 +1746,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L18",
       "id": "euroleague_api_standings_standings_get_standings",
-      "community": 5,
+      "community": 0,
       "norm_label": ".get_standings()"
     },
     {
@@ -1782,7 +1755,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L18",
       "id": "euroleague_api_main_src_euroleague_api_standings_py_int",
-      "community": 5,
+      "community": 0,
       "norm_label": "int"
     },
     {
@@ -1791,7 +1764,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L18",
       "id": "euroleague_api_main_src_euroleague_api_standings_py_str",
-      "community": 5,
+      "community": 0,
       "norm_label": "str"
     },
     {
@@ -1800,7 +1773,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L18",
       "id": "euroleague_api_main_src_euroleague_api_standings_py_dataframe",
-      "community": 5,
+      "community": 0,
       "norm_label": "dataframe"
     },
     {
@@ -1809,7 +1782,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L7",
       "id": "euroleague_api_standings_rationale_7",
-      "community": 5,
+      "community": 0,
       "norm_label": "a class for getting standings data.      args:         competition (str, optiona"
     },
     {
@@ -1818,7 +1791,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L24",
       "id": "euroleague_api_standings_rationale_24",
-      "community": 5,
+      "community": 0,
       "norm_label": "get the standings of round in given season          args:              season (i"
     },
     {
@@ -1827,7 +1800,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/team_stats.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_team_stats_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "team_stats.py"
     },
     {
@@ -1971,7 +1944,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L1",
       "id": "euroleague_api_main_src_euroleague_api_utils_py",
-      "community": 55,
+      "community": 0,
       "norm_label": "utils.py"
     },
     {
@@ -1980,7 +1953,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L12",
       "id": "euroleague_api_main_src_euroleague_api_utils_py_euroleague_api_utils_get_requests",
-      "community": 55,
+      "community": 0,
       "norm_label": "get_requests()"
     },
     {
@@ -1989,7 +1962,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L12",
       "id": "euroleague_api_main_src_euroleague_api_utils_py_str",
-      "community": 55,
+      "community": 0,
       "norm_label": "str"
     },
     {
@@ -1998,7 +1971,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L12",
       "id": "response",
-      "community": 55,
+      "community": 0,
       "norm_label": "response"
     },
     {
@@ -2007,7 +1980,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L46",
       "id": "euroleague_api_main_src_euroleague_api_utils_py_euroleague_api_utils_raise_error",
-      "community": 55,
+      "community": 0,
       "norm_label": "raise_error()"
     },
     {
@@ -2016,7 +1989,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L46",
       "id": "bool",
-      "community": 55,
+      "community": 0,
       "norm_label": "bool"
     },
     {
@@ -2025,7 +1998,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L82",
       "id": "euroleague_api_main_src_euroleague_api_utils_py_euroleague_api_utils_get_data_over_collection_of_games",
-      "community": 57,
+      "community": 5,
       "norm_label": "get_data_over_collection_of_games()"
     },
     {
@@ -2034,7 +2007,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L82",
       "id": "euroleague_api_main_src_euroleague_api_utils_py_int",
-      "community": 57,
+      "community": 5,
       "norm_label": "int"
     },
     {
@@ -2043,7 +2016,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L82",
       "id": "euroleague_api_main_src_euroleague_api_utils_py_dataframe",
-      "community": 57,
+      "community": 5,
       "norm_label": "dataframe"
     },
     {
@@ -2052,7 +2025,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L17",
       "id": "euroleague_api_utils_rationale_17",
-      "community": 55,
+      "community": 0,
       "norm_label": "a wrapper to `requests.get()` which handles unsuccesful requests too.      args:"
     },
     {
@@ -2061,7 +2034,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L52",
       "id": "euroleague_api_utils_rationale_52",
-      "community": 55,
+      "community": 0,
       "norm_label": "a function that raises a valueerror with specific message.      args:          v"
     },
     {
@@ -2070,7 +2043,7 @@
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L87",
       "id": "euroleague_api_utils_rationale_87",
-      "community": 57,
+      "community": 5,
       "norm_label": "a function that collects data over a collection of games given their     game co"
     },
     {
@@ -5741,7 +5714,7 @@
       "file_type": "code",
       "source_file": "euroleague_api-main/src/euroleague_api/EuroLeagueData.py",
       "source_location": "L13",
-      "community": 55,
+      "community": 0,
       "norm_label": "euroleaguedata",
       "id": "euroleague_api_euroleaguedata_euroleaguedata"
     },
@@ -5759,7 +5732,7 @@
       "file_type": "code",
       "source_file": "euroleague_api-main/src/euroleague_api/game_stats.py",
       "source_location": "L9",
-      "community": 1,
+      "community": 0,
       "norm_label": "gamestats",
       "id": "euroleague_api_game_stats_gamestats"
     },
@@ -5777,7 +5750,7 @@
       "file_type": "code",
       "source_file": "euroleague_api-main/src/euroleague_api/shot_data.py",
       "source_location": "L7",
-      "community": 55,
+      "community": 0,
       "norm_label": "shotdata",
       "id": "euroleague_api_shot_data_shotdata"
     },
@@ -5786,7 +5759,7 @@
       "file_type": "code",
       "source_file": "euroleague_api-main/src/euroleague_api/standings.py",
       "source_location": "L6",
-      "community": 5,
+      "community": 0,
       "norm_label": "standings",
       "id": "euroleague_api_standings_standings"
     },
@@ -5804,7 +5777,7 @@
       "file_type": "code",
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L12",
-      "community": 55,
+      "community": 0,
       "norm_label": "get_requests()",
       "id": "euroleague_api_utils_get_requests"
     },
@@ -5813,7 +5786,7 @@
       "file_type": "code",
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L46",
-      "community": 55,
+      "community": 0,
       "norm_label": "raise_error()",
       "id": "euroleague_api_utils_raise_error"
     },
@@ -5822,7 +5795,7 @@
       "file_type": "code",
       "source_file": "euroleague_api-main/src/euroleague_api/utils.py",
       "source_location": "L82",
-      "community": 57,
+      "community": 5,
       "norm_label": "get_data_over_collection_of_games()",
       "id": "euroleague_api_utils_get_data_over_collection_of_games"
     },
@@ -6112,16 +6085,6 @@
       "target": "euroleague_backtest_optimise_team"
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "backtest.py",
-      "source_location": "L212",
-      "weight": 1.0,
-      "source": "backtest_py",
-      "target": "euroleague_backtest_score_team",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "backtest.py",
@@ -6162,16 +6125,6 @@
       "confidence_score": 1.0,
       "source": "euroleague_backtest_rationale_110",
       "target": "euroleague_backtest_optimise_team"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "backtest.py",
-      "source_location": "L213",
-      "weight": 1.0,
-      "source": "euroleague_backtest_rationale_213",
-      "target": "euroleague_backtest_score_team",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -6355,16 +6308,6 @@
       "confidence_score": 1.0,
       "source": "euroleague_optimize_team_rationale_29",
       "target": "optimize_team_py"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "optimize_team_v2.py",
-      "source_location": "L63",
-      "weight": 1.0,
-      "source": "optimize_team_v2_py",
-      "target": "euroleague_optimize_team_v2_build_prob",
-      "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
@@ -12099,9 +12042,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "claude_md",
-      "target": "euroleague_claude_claude_code_euroleague_fantasy_project"
+      "target": "euroleague_claude_claude_code_euroleague_fantasy_project",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12109,9 +12052,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L3",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "euroleague_claude_claude_code_euroleague_fantasy_project",
-      "target": "euroleague_claude_end_of_session_checklist_do_this_before_signing_off"
+      "target": "euroleague_claude_end_of_session_checklist_do_this_before_signing_off",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12119,9 +12062,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L22",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "euroleague_claude_claude_code_euroleague_fantasy_project",
-      "target": "euroleague_claude_season_naming"
+      "target": "euroleague_claude_season_naming",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12129,9 +12072,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L28",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "euroleague_claude_claude_code_euroleague_fantasy_project",
-      "target": "euroleague_claude_pipeline_run_order"
+      "target": "euroleague_claude_pipeline_run_order",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12139,9 +12082,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L38",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "euroleague_claude_claude_code_euroleague_fantasy_project",
-      "target": "euroleague_claude_price_scraping"
+      "target": "euroleague_claude_price_scraping",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12149,9 +12092,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L44",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "euroleague_claude_claude_code_euroleague_fantasy_project",
-      "target": "euroleague_claude_key_fixes_applied_don_t_revert"
+      "target": "euroleague_claude_key_fixes_applied_don_t_revert",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12159,9 +12102,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L6",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "euroleague_claude_end_of_session_checklist_do_this_before_signing_off",
-      "target": "euroleague_claude_codeblock_1"
+      "target": "euroleague_claude_codeblock_1",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12169,9 +12112,9 @@
       "source_file": "CLAUDE.md",
       "source_location": "L30",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "euroleague_claude_pipeline_run_order",
-      "target": "euroleague_claude_codeblock_2"
+      "target": "euroleague_claude_codeblock_2",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16520,5 +16463,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f82225704b37ee1b8d111b053a05cd6a4c9d35a9"
+  "built_at_commit": "8c608d9addc79cc844c95e276f5df3861e9a8fba"
 }

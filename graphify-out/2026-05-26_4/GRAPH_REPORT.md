@@ -1,16 +1,16 @@
 # Graph Report - Euroleague  (2026-05-26)
 
 ## Corpus Check
-- 37 files · ~28,800 words
+- 37 files · ~28,621 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 668 nodes · 1016 edges · 58 communities (33 shown, 25 thin omitted)
+- 665 nodes · 1013 edges · 55 communities (30 shown, 25 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 83 edges (avg confidence: 0.54)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f8222570`
+- Built from commit: `8c608d9a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -68,9 +68,6 @@
 - [[_COMMUNITY_Community 52|Community 52]]
 - [[_COMMUNITY_Community 53|Community 53]]
 - [[_COMMUNITY_Community 54|Community 54]]
-- [[_COMMUNITY_Community 55|Community 55]]
-- [[_COMMUNITY_Community 56|Community 56]]
-- [[_COMMUNITY_Community 57|Community 57]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `EuroLeagueData` - 48 edges
@@ -96,15 +93,15 @@
 - `PlayByPlay` --uses--> `BoxScoreData`  [INFERRED]
   euroleague_api-main/src/euroleague_api/play_by_play_data.py → euroleague_api-main/src/euroleague_api/boxscore_data.py
 
-## Communities (58 total, 25 thin omitted)
+## Communities (55 total, 25 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.20
-Nodes (14): A function that gets the play-by-play data of *all* games in a range of, DataFrame, PlayByPlay, int, PlayByPlay, A function that gets the play-by-play data of *all* games in a single         se, A function that gets the play-by-play data of *all* games in a range of, A class for getting the game play-by-play data.      Args:         competition ( (+6 more)
+Cohesion: 0.08
+Nodes (40): bool, EuroLeagueData, GameStats, DataFrame, PlayByPlay, int, DataFrame, ShotData (+32 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.14
-Nodes (19): GameStats, A class for getting the game related stats and data.      Args:         competit, Get game report data for *all* games in a single season          Args:, Get game report data for *all* games in a range of seasons          Args:, Get game stats data for single game          Args:              season (int): Th, A function that gets the game stats data         of *all* games in a single roun, Get game stats data for *all* games in a single season          Args:, Get game stats data for *all* games in a range of seasons          Args: (+11 more)
+Cohesion: 0.13
+Nodes (18): A class for getting the game related stats and data.      Args:         competit, Get game report data for *all* games in a single season          Args:, Get game report data for *all* games in a range of seasons          Args:, Get game stats data for single game          Args:              season (int): Th, A function that gets the game stats data         of *all* games in a single roun, Get game stats data for *all* games in a single season          Args:, Get game stats data for *all* games in a range of seasons          Args:, A function that gets the "teams comparison" game stats for a single         game (+10 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.33
@@ -112,15 +109,15 @@ Nodes (4): objective(), Hyperparameter tuning + feature importance analysis.  Ru
 
 ### Community 3 - "Community 3"
 Cohesion: 0.13
-Nodes (25): BoxScoreData, The players' and team's total stats of a particular game.          Args:, A class for getting box-score data      Args:         competition (str, optional, A function that gets the boxscore quarter data of all games in a         particu, A function that gets the boxscore quarter data of *all* games in a         singl, A function that return the player boxscore stats for all games in a         sing, A function that return the player boxscore stats for all games in a         sing, A helper function that gets the boxscore data of a particular data.          Arg (+17 more)
+Nodes (26): BoxScoreData, The players' and team's total stats of a particular game.          Args:, A class for getting box-score data      Args:         competition (str, optional, A function that gets the boxscore quarter data of all games in a         particu, A function that gets the boxscore quarter data of *all* games in a         singl, A function that gets the play-by-play data of *all* games in a range of, A function that return the player boxscore stats for all games in a         sing, A function that return the player boxscore stats for all games in a         sing (+18 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.05
 Nodes (26): Ancestors (in MRO), Attributes, Class variables, Classes, code:python3 (BASE_URL), code:python3 (V1), code:python3 (V2), code:python3 (V3) (+18 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.12
-Nodes (19): A function that returns the game metadata, e.g. gamecodes of a round         in, Base class for collecting Euroleague and Eurocup competition's data.      Args:, A wrapper function for getting game data for all games in a single         round, A wrapper function for getting game data for all games in a single         seaso, A wrapper function with the all game data in a range of seasons          Args:, init function for the EuroLeagueData class.          Args:             competiti, Concatenates the base URL and makes the game url.          Args:              se, A function that returns the game metadata, e.g. gamecodes of season          Arg (+11 more)
+Cohesion: 0.14
+Nodes (17): A function that returns the game metadata, e.g. gamecodes of a round         in, Base class for collecting Euroleague and Eurocup competition's data.      Args:, A wrapper function for getting game data for all games in a single         round, A wrapper function for getting game data for all games in a single         seaso, A wrapper function with the all game data in a range of seasons          Args:, init function for the EuroLeagueData class.          Args:             competiti, Concatenates the base URL and makes the game url.          Args:              se, A function that returns the game metadata, e.g. gamecodes of season          Arg (+9 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.24
@@ -195,8 +192,8 @@ Cohesion: 0.25
 Nodes (7): 1. Grant of License, 2. License Fee, 3. Restrictions, 4. Warranty & Liability, 5. Termination, Commercial License Agreement, Dual License: GPLv3 or Commercial License
 
 ### Community 32 - "Community 32"
-Cohesion: 0.25
-Nodes (7): DataFrame, str, optimise_team(), backtest.py — Round-by-round backtest of ML fantasy team predictions.  For each, Pick the optimal 10-player team + captain from `pool`.     `pool` must have colu, Score a team using 6-starter / 4-bench / 1-captain rules., score_team()
+Cohesion: 0.33
+Nodes (5): DataFrame, str, optimise_team(), backtest.py — Round-by-round backtest of ML fantasy team predictions.  For each, Pick the optimal 10-player team + captain from `pool`.     `pool` must have colu
 
 ### Community 33 - "Community 33"
 Cohesion: 0.40
@@ -210,18 +207,6 @@ Nodes (9): GameMetadata, Retrieves game metadata for a given gamecode, such as s
 Cohesion: 0.22
 Nodes (8): Claude Code — Euroleague Fantasy Project, code:block1 (graphify update .), code:block2 (python3 prepare_data.py      # ~6h due to API rate limits (0), End-of-session checklist (do this before signing off), Key fixes applied (don't revert), Pipeline run order, Price scraping, Season naming
 
-### Community 55 - "Community 55"
-Cohesion: 0.29
-Nodes (11): bool, EuroLeagueData, get_requests(), raise_error(), str, ShotData, get_requests(), raise_error() (+3 more)
-
-### Community 56 - "Community 56"
-Cohesion: 0.29
-Nodes (8): DataFrame, ShotData, int, A function that gets the shot data of *all* games in a range of seasons, A function that gets the shot data of a particular game.          Args:, A function that gets the shot data of *all* games in a single round          Arg, A class for getting shot data.      Args:         competition (str, optional): T, A function that gets the shot data of *all* games in a single season          Ar
-
-### Community 57 - "Community 57"
-Cohesion: 0.60
-Nodes (5): DataFrame, get_data_over_collection_of_games(), int, get_data_over_collection_of_games(), A function that collects data over a collection of games given their     game co
-
 ## Knowledge Gaps
 - **119 isolated node(s):** `DataFrame`, `str`, `Trial`, `str`, `n_estimators` (+114 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -230,12 +215,12 @@ Nodes (5): DataFrame, get_data_over_collection_of_games(), int, get_data_over_co
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `EuroLeagueData` connect `Community 55` to `Community 0`, `Community 1`, `Community 3`, `Community 5`, `Community 6`, `Community 53`, `Community 56`, `Community 57`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
-- **Why does `EuroLeagueData` connect `Community 5` to `Community 0`, `Community 1`, `Community 3`, `Community 6`, `Community 53`, `Community 55`, `Community 56`?**
+- **Why does `EuroLeagueData` connect `Community 0` to `Community 1`, `Community 3`, `Community 5`, `Community 6`, `Community 53`?**
+  _High betweenness centrality (0.038) - this node is a cross-community bridge._
+- **Why does `EuroLeagueData` connect `Community 5` to `Community 0`, `Community 1`, `Community 3`, `Community 6`, `Community 53`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._
-- **Why does `PlayerStats Class` connect `Community 6` to `Community 11`, `Community 55`?**
-  _High betweenness centrality (0.018) - this node is a cross-community bridge._
+- **Why does `PlayerStats Class` connect `Community 6` to `Community 0`, `Community 11`?**
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **Are the 29 inferred relationships involving `EuroLeagueData` (e.g. with `int` and `str`) actually correct?**
   _`EuroLeagueData` has 29 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 29 inferred relationships involving `EuroLeagueData` (e.g. with `BoxScoreData` and `GameMetadata`) actually correct?**
@@ -243,4 +228,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 8 inferred relationships involving `BoxScoreData` (e.g. with `int` and `DataFrame`) actually correct?**
   _`BoxScoreData` has 8 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `DataFrame`, `str`, `backtest.py — Round-by-round backtest of ML fantasy team predictions.  For each` to the rest of the system?**
-  _183 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _182 weakly-connected nodes found - possible documentation gaps or missing edges._
