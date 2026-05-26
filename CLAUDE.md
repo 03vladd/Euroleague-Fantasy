@@ -41,6 +41,18 @@ Run `python3 scrape_prices.py` — requires WSLg display (Windows 11 with WSL2).
 Browser opens headed; log in → navigate to Transfer/Market → browse all positions → close window.
 Credentials stored in `.fantasy_creds.json` (gitignored).
 
+## Schedule / transfer window
+
+```
+python3 schedule_helper.py              # auto-detect next round from today's date
+python3 schedule_helper.py --round 5   # specific round
+python3 optimize_team_v2.py --round 5  # optimizer + game times in one shot
+```
+
+- EuroLeague schedule only (Eurocup games irrelevant for team selection)
+- EC→EL transfers are included in the player pool but flagged with ⚡EC — predictions are low-confidence (weaker prior competition, new team fit unknown)
+- Transfer deadline = first tipoff of the round (shown automatically)
+
 ## Key fixes applied (don't revert)
 
 - `euroleague_api/utils.py`: `time.sleep(0.35)` is in `finally` block — applies to every request including errors, prevents TCP rate limiting

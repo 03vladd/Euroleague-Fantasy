@@ -1,11 +1,21 @@
 """
 Optimize fantasy team using ML predictions.
 Enforces 4G/4F/2C position constraints and picks an optimal captain (2× points).
+
+Usage:
+    python3 optimize_team_v2.py                 # no schedule info
+    python3 optimize_team_v2.py --round 5       # show game times for round 5
 """
 
+import argparse
 import pandas as pd
 import numpy as np
 from pulp import LpProblem, LpMaximize, LpVariable, lpSum, PULP_CBC_CMD
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--round',  type=int, default=None, help='Round number for schedule display')
+parser.add_argument('--season', type=int, default=2025)
+args = parser.parse_args()
 
 print("=" * 60)
 print("EUROLEAGUE FANTASY OPTIMIZER V2 (ML-POWERED)")
@@ -175,6 +185,34 @@ for _, p in alts.iterrows():
     print(f"{p['Player']:<25} {p.get('Position','?'):<4} {p['price']:>5.1f} "
           f"{p['fantasy_points_mean']:>6.1f} {p['predicted_fp']:>6.1f} "
           f"{p['upside']:>7.1f}")
+
+# ── Schedule: game times for selected round ───────────────────
+if args.round is not None:
+    try:
+        from schedule_helper import load_el_schedule, detect_round, team_game_times
+        sched = load_el_schedule(args.season)
+        gameday = args.round
+        tm = team_game_times(sched, gameday)
+
+        first_game = min(tm.values()) if tm else None
+
+        print("\n" + "=" * 60)
+        print(f"GAME SCHEDULE — Round {gameday}")
+        print("=" * 60)
+        if first_game:
+            print(f"\n  ⚠  Transfer deadline: {first_game.strftime('%a %b %d  %H:%M')}")
+        print(f"\n  {'':2} {'':1} {'Player':<24}  {'Team':<5}  {'Game':<11}  {'Pred':>6}")
+        print(f"  {'-'*54}")
+        for _, p in team_df.sort_values(
+                'effective_fp', ascending=False).iterrows():
+            code = p['Team']
+            game_str = tm[code].strftime('%a %H:%M') if code in tm else '?'
+            cap  = '★' if p['is_captain'] else ' '
+            role = 'S' if p['is_starter'] else 'B'
+            print(f"  {cap} {role} {p['Player']:<24}  {code:<5}  {game_str:<11}  "
+                  f"{p['predicted_fp']:>6.1f}")
+    except Exception as e:
+        print(f"\n(Schedule unavailable: {e})")
 
 print("\n" + "=" * 60)
 print("DONE! Ready to submit your team")
