@@ -1,0 +1,4 @@
+# Keep GitHub language stats focused on project code
+euroleague_api-main/** linguist-vendored
+graphify-out/** linguist-generated
+*.html linguist-generated
